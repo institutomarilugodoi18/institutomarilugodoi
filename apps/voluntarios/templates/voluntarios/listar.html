@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container py-5 mt-5 pt-5">
+  <h2 class="mb-4">Voluntários Cadastrados</h2>
+  <div class="d-flex justify-content-between align-items-center mt-3 mb-3">
+    
+  </div>
+  
+  <div class="d-flex justify-content-between align-items-center p-3 bg-light border-bottom">
+    <div>
+      Olá, {{ request.user.username }}!
+    </div>
+    <div>
+      <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Sair</a>
+    </div>
+  </div>
+
+  <form method="get" class="row g-3 mb-4">
+    <div class="col-md-4">
+      <label for="cidade" class="form-label">Filtrar por Cidade:</label>
+      <select name="cidade" id="cidade" class="form-select">
+        <option value="">Todas</option>
+        <option value="São José dos Campos" {% if cidade_selecionada == "São José dos Campos" %}selected{% endif %}>São José dos Campos</option>
+        <option value="Jacareí" {% if cidade_selecionada == "Jacareí" %}selected{% endif %}>Jacareí</option>
+        <option value="Caçapava" {% if cidade_selecionada == "Caçapava" %}selected{% endif %}>Caçapava</option>
+        <option value="Taubaté" {% if cidade_selecionada == "Taubaté" %}selected{% endif %}>Taubaté</option>
+      </select>
+    </div>
+  
+    <div class="col-md-4">
+      <label for="area" class="form-label">Filtrar por Área:</label>
+      <select name="area" id="area" class="form-select">
+        <option value="">Todas</option>
+        <option value="Evento de adoção" {% if area_selecionada == "Evento de adoção" %}selected{% endif %}>Evento de adoção</option>
+        <option value="Cuidados e Bem-Estar" {% if area_selecionada == "Cuidados e Bem-Estar" %}selected{% endif %}>Cuidados e Bem-Estar</option>
+        <option value="Associado" {% if area_selecionada == "Associado" %}selected{% endif %}>Associado</option>
+        <option value="Outras tarefas" {% if area_selecionada == "Outras tarefas" %}selected{% endif %}>Outras tarefas</option>
+      </select>
+    </div>
+  
+    <div class="col-md-4 align-self-end">
+      <button type="submit" class="btn btn-primary">Filtrar</button>
+      <a href="{% url 'listar_voluntarios' %}" class="btn btn-outline-secondary">Limpar Filtros</a>
+    </div>
+  </form>  
+
+  {% if voluntarios %}
+    <p><strong>Total de voluntários:</strong> {{ voluntarios_count }}</p>
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+          <tr>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Telefone</th>
+            <th>Endereço</th>
+            <th>Cidade</th>
+            <th>Área</th>
+            <th><a href="{% url 'cadastrar_voluntario' %}" class="btn btn-success btn-sm">➕ Novo Voluntário</a></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for v in voluntarios %}
+            <tr>
+              <td>{{ v.nome }}</td>
+              <td>{{ v.email }}</td>
+              <td>{{ v.telefone }}</td>
+              <td>{{ v.endereco }}</td>
+              <td>{{ v.get_cidade_display|default:v.cidade }}</td>
+              <td>{{ v.get_area_display|default:v.area }}</td>
+              <td>{% if v.id %}<a href="{% url 'editar_voluntario' v.id %}" class="btn btn-warning btn-sm">✏️ Editar</a>{% else %}<span class="text-muted">ID inválido</span>{% endif %} <a href="{% url 'excluir_voluntario' v.id %}" class="btn btn-danger btn-sm">🗑️ Excluir</a></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p>Nenhum voluntário cadastrado ainda.</p>
+  {% endif %}
+
+  <a href="/" class="btn btn-secondary mt-4">Voltar para o Início</a>
+</div>
+{% endblock %}

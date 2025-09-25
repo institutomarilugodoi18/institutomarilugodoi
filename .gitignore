@@ -1,0 +1,29 @@
+# Python/Django
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+*.log
+*.sqlite3
+media/
+staticfiles/
+# Env & Secrets
+.env
+.env.dev
+.env.prod
+# Virtual env
+venv/
+.venv/
+ENV/
+# IDE/OS
+.vscode/
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
+# Dumps/Backups
+db/
+backup/
+*.sql
+*.dump

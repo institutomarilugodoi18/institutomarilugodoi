@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTK6D83W5"></script>
+	<script>
+  		window.dataLayer = window.dataLayer || [];
+  		function gtag(){dataLayer.push(arguments);}
+  		gtag('js', new Date());
+  		gtag('config', 'G-PGTK6D83W5');
+	</script>
+	<meta charset="UTF-8">
+	<meta content="IE=edge" http-equiv="X-UA-Compatible">
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+	<title>{% block title %}Instituto Marilu Godoi{% endblock %}</title>
+	<!-- All CSS -->
+	<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+	<link href="{% static 'css/style.css' %}" rel="stylesheet">
+</head>
+<body>
+	<nav class="navbar navbar-expand-xxl navbar-light bg-light fixed-top">
+		<div class="container">
+			<a class="navbar-brand" href="{% url 'index' %}"><span class="text-warning">Instituto </span>Marilu Godoi</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+					<li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+					<li class="nav-item">{% if request.path == "/" %}<a class="nav-link" href="#about">Sobre</a>{% else %}<a class="nav-link" href="{% url 'index' %}#about">Sobre</a>{% endif %}</li>
+					<li class="nav-item">{% if request.path == "/" %}<a class="nav-link" href="#voluntarios">Voluntários</a>{% else %}<a class="nav-link" href="{% url 'index' %}#voluntarios">Voluntários</a>{% endif %}</li>
+					<li class="nav-item">{% if request.path == "/" %}<a class="nav-link" href="#brecho">Brechó</a>{% else %}<a class="nav-link" href="{% url 'index' %}#brecho">Brechó</a>{% endif %}</li>
+					<li class="nav-item">{% if request.path == "/" %}<a class="nav-link" href="#souvenir">Souvenir</a>{% else %}<a class="nav-link" href="{% url 'index' %}#souvenir">Souvenir</a>{% endif %}</li>
+					<li class="nav-item">{% if request.path == "/" %}<a class="nav-link" href="#notafiscal">NFP</a>{% else %}<a class="nav-link" href="{% url 'index' %}#notafiscal">NFP</a>{% endif %}</li>
+					<li class="nav-item">{% if request.path == "/" %}<a class="nav-link" href="#adocao">Adoção</a>{% else %}<a class="nav-link" href="{% url 'index' %}#adocao">Adoção</a>{% endif %}</li>
+					<li class="nav-item">{% if request.path == "/" %}<a class="nav-link" href="#team">Campanhas</a>{% else %}<a class="nav-link" href="{% url 'index' %}#team">Campanhas</a>{% endif %}</li>
+					<li class="nav-item">{% if request.path == "/" %}<a class="nav-link" href="#faq">FAQ</a>{% else %}<a class="nav-link" href="{% url 'index' %}#faq">FAQ</a>{% endif %}</li>
+					<li class="nav-item">{% if request.path == "/" %}<a class="nav-link" href="#contact">Contato</a>{% else %}<a class="nav-link" href="{% url 'index' %}#contact">Contato</a>{% endif %}</li>
+					{% if user.is_authenticated %}<li class="nav-item"><a href="{% url 'listar_voluntarios' %}" class="nav-link">Painel</a></li><li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Sair</a></li>{% else %}<li class="nav-item"><a href="{% url 'login' %}" class="nav-link">Login</a></li>{% endif %}
+				</ul>  
+			</div>
+		</div>
+	</nav>
+
+	<!-- Aqui começa o bloco de conteúdo -->
+	{% block content %}
+	{% endblock %}
+	<!-- Aqui termina o bloco de conteúdo -->
+
+	<!-- Contact starts -->
+	<section class="contact section-padding" id="contact">
+		<div class="container mt-5 mb-5">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="section-header text-center pb-5">
+						<h2>Entre em Contato</h2>
+						<p>E-mail:<br>
+							<a href="mailto:institutomarilugodoi18@gmail.com">institutomarilugodoi18@gmail.com</a></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- contact ends -->
+
+	<!-- footer starts -->
+	<footer class="bg-dark p-2 text-center">
+		<div class="container">
+			<p class="text-white">All Right Reserved By @website INSTITUTO MARILU GODOI®</p>
+		</div>
+	</footer>
+	<!-- footer ends -->
+
+	<!-- All Js -->
+	<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>
