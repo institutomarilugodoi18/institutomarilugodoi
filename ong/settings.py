@@ -126,14 +126,14 @@ EMAIL_FAIL_SILENTLY = config('EMAIL_FAIL_SILENTLY', default=True, cast=bool)
 SESSION_COOKIE_AGE = 2400
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
-if DEBUG:
-    CSRF_COOKIE_SECURE = False
-    SESSION_COOKIE_SECURE = False
-    SECURE_SSL_REDIRECT = False
-else:
-    CSRF_COOKIE_SECURE = True
-    SESSION_COOKIE_SECURE = True
-    SECURE_SSL_REDIRECT = True
+# Estamos atrás de proxy (Brasil Cloud): respeitar cabeçalhos do proxy
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Ler flags via env (evita loop de redirect quando o proxy já força HTTPS)
+SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=not DEBUG, cast=bool)
+SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=not DEBUG, cast=bool)
+CSRF_COOKIE_SECURE   = config('CSRF_COOKIE_SECURE',   default=not DEBUG, cast=bool)
 
 # --- Logs simples para produção ---
 LOGGING = {
