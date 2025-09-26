@@ -24,7 +24,7 @@ def cadastrar_voluntario(request):
                 f'foi cadastrado com sucesso na área {voluntario.area}!'
             )
             send_mail(
-                subject='assunto,
+                subject='assunto',
                 message=corpo,
                 from_email=settings.DEFAULT_FROM_EMAIL,
                 recipient_list=settings.NOTIFICATIONS_VOLUNTARIOS_TO,
