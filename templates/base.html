@@ -1,29 +1,31 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
 	<!-- Google tag (gtag.js) -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PGTK6D83W5"></script>
 	<script>
-  		window.dataLayer = window.dataLayer || [];
-  		function gtag(){dataLayer.push(arguments);}
-  		gtag('js', new Date());
-  		gtag('config', 'G-PGTK6D83W5');
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'G-PGTK6D83W5');
 	</script>
+
 	<meta charset="UTF-8">
-	<meta content="IE=edge" http-equiv="X-UA-Compatible">
-	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>{% block title %}Instituto Marilu Godoi{% endblock %}</title>
-	<!-- All CSS -->
-	<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
-	<link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-	<nav class="navbar navbar-expand-xxl navbar-light bg-light fixed-top">
+	<nav class="navbar navbar-expand-xxl navbar-light bg-light fixed-top" role="navigation" aria-label="Barra de navegação principal">
 		<div class="container">
 			<a class="navbar-brand" href="{% url 'index' %}"><span class="text-warning">Instituto </span>Marilu Godoi</a>
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Alternar navegação">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -38,24 +40,29 @@
 					<li class="nav-item">{% if request.path == "/" %}<a class="nav-link" href="#team">Campanhas</a>{% else %}<a class="nav-link" href="{% url 'index' %}#team">Campanhas</a>{% endif %}</li>
 					<li class="nav-item">{% if request.path == "/" %}<a class="nav-link" href="#faq">FAQ</a>{% else %}<a class="nav-link" href="{% url 'index' %}#faq">FAQ</a>{% endif %}</li>
 					<li class="nav-item">{% if request.path == "/" %}<a class="nav-link" href="#contact">Contato</a>{% else %}<a class="nav-link" href="{% url 'index' %}#contact">Contato</a>{% endif %}</li>
-					{% if user.is_authenticated %}<li class="nav-item"><a href="{% url 'listar_voluntarios' %}" class="nav-link">Painel</a></li><li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Sair</a></li>{% else %}<li class="nav-item"><a href="{% url 'login' %}" class="nav-link">Login</a></li>{% endif %}
-				</ul>  
+					{% if user.is_authenticated %}
+						<li class="nav-item"><a href="{% url 'listar_voluntarios' %}" class="nav-link">Painel</a></li>
+						<li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Sair</a></li>
+					{% else %}
+						<li class="nav-item"><a href="{% url 'login' %}" class="nav-link">Login</a></li>
+					{% endif %}
+				</ul>
 			</div>
 		</div>
 	</nav>
 
-	<!-- Aqui começa o bloco de conteúdo -->
-	{% block content %}
-	{% endblock %}
-	<!-- Aqui termina o bloco de conteúdo -->
+	<!-- Main: conteúdo da página (usado pelo leitor de texto) -->
+	<main id="conteudo-principal" role="main">
+		{% block content %}{% endblock %}
+	</main>
 
-	<!-- Contact starts -->
-	<section class="contact section-padding" id="contact">
+	<!-- Contact -->
+	<section class="contact section-padding" id="contact" aria-labelledby="contact-titulo">
 		<div class="container mt-5 mb-5">
 			<div class="row">
 				<div class="col-md-12">
 					<div class="section-header text-center pb-5">
-						<h2>Entre em Contato</h2>
+						<h2 id="contact-titulo">Entre em Contato</h2>
 						<p>E-mail:<br>
 							<a href="mailto:institutomarilugodoi18@gmail.com">institutomarilugodoi18@gmail.com</a></p>
 					</div>
@@ -63,18 +70,27 @@
 			</div>
 		</div>
 	</section>
-	<!-- contact ends -->
 
-	<!-- footer starts -->
-	<footer class="bg-dark p-2 text-center">
+	<!-- Footer -->
+	<footer class="bg-dark p-2 text-center" role="contentinfo">
 		<div class="container">
 			<p class="text-white">All Right Reserved By @website INSTITUTO MARILU GODOI®</p>
 		</div>
 	</footer>
-	<!-- footer ends -->
 
-	<!-- All Js -->
+	<!-- Botões do Leitor de Texto (flutuantes) -->
+	<div class="tts-toolbar" role="region" aria-label="Leitor de texto">
+		<button class="btn btn-light btn-sm" id="tts-ler" type="button" aria-label="Ler/Continuar" title="Ler">
+			<i class="bi bi-megaphone-fill" aria-hidden="true"></i> <span class="tts-label">Ler</span>
+		</button>
+		<button class="btn btn-light btn-sm" id="tts-parar" type="button" aria-label="Parar leitura" title="Parar">
+			<i class="bi bi-stop-fill" aria-hidden="true"></i> <span class="tts-label">Parar</span>
+		</button>
+	</div>
+
+	<!-- JS -->
 	<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-{% block extra_js %}{% endblock %}
+	<script src="{% static 'js/acessibilidade.js' %}"></script>
+	{% block extra_js %}{% endblock %}
 </body>
 </html>
