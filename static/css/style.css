@@ -142,3 +142,63 @@ body { background: #f1fbff; }
 	.tts-toolbar .btn i { font-size: 1.1rem; }
 	.tts-toolbar .btn .tts-label { display: none; }
 }
+
+/* Container do parágrafo com ícones inline */
+.inline-icons {
+  gap: .65rem; /* respiro entre texto e ícones (desktop) */
+}
+
+/* Links dos ícones: mesma cor do texto, área de toque ampliada */
+.inline-icons .icon-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  color: currentColor;
+  text-decoration: none;
+  padding: .25rem;          /* aumenta a área clicável sem “aparecer” */
+  border-radius: .375rem;
+  transition: transform .2s ease, opacity .2s ease;
+  -webkit-tap-highlight-color: transparent; /* melhora toque no mobile */
+}
+
+/* Ícones ligeiramente maiores que o texto */
+.inline-icons .icon-link i {
+  font-size: 1.1em;         /* sutilmente acima do parágrafo (desktop) */
+  vertical-align: middle;
+}
+
+/* Hover/focus: mais destaque (sem sombra) */
+.inline-icons .icon-link:hover i,
+.inline-icons .icon-link:focus i {
+  opacity: .9;
+  transform: translateY(-1px) scale(1.22);  /* aumento visível e elegante */
+}
+
+/* Acessibilidade: foco visível ao navegar por teclado */
+.inline-icons .icon-link:focus {
+  outline: none;
+  text-decoration: underline; /* discreto e padrão */
+}
+
+/* Mobile: mais espaço e alvo de toque maior */
+@media (max-width: 576px) {
+  .inline-icons {
+    gap: .95rem;              /* mais respiro entre ícones no celular */
+  }
+  .inline-icons .icon-link {
+    padding: .38rem;          /* alvo de toque mais confortável */
+  }
+  .inline-icons .icon-link i {
+    font-size: 1.15em;        /* 1 “tique” maior pro mobile */
+  }
+}
+
+/* Usuários que preferem menos animação */
+@media (prefers-reduced-motion: reduce) {
+  .inline-icons .icon-link,
+  .inline-icons .icon-link i {
+    transition: none;
+    transform: none !important;
+  }
+}
