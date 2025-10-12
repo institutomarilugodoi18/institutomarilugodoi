@@ -22,7 +22,7 @@
 	<link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-	<nav class="navbar navbar-expand-xxl navbar-light bg-light fixed-top" role="navigation" aria-label="Barra de navegação principal">
+	<nav class="navbar navbar-expand-xxl navbar-light bg-light fixed-top" aria-label="Barra de navegação principal">
 		<div class="container">
 			<a class="navbar-brand" href="{% url 'index' %}"><span class="text-warning">Instituto </span>Marilu Godoi</a>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Alternar navegação">
@@ -52,7 +52,7 @@
 	</nav>
 
 	<!-- Main: conteúdo da página (usado pelo leitor de texto) -->
-	<main id="conteudo-principal" role="main">
+	<main id="conteudo-principal">
 		{% block content %}{% endblock %}
 	</main>
 
@@ -72,7 +72,7 @@
 	</section>
 
 	<!-- Footer -->
-	<footer class="bg-dark p-2 text-center" role="contentinfo">
+	<footer class="bg-dark p-2 text-center">
 		<div class="container">
 			<p class="text-white">All Right Reserved By @website INSTITUTO MARILU GODOI®</p>
 		</div>

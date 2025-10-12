@@ -92,7 +92,7 @@
 
 		<div class="row">
 			<div class="col-12 col-md-6 col-lg-3">
-				<a class="text-decoration-none" href="{% url 'cadastrar_voluntario' %}?area=Evento de adoção">
+				<a class="text-decoration-none" href="{% url 'cadastrar_voluntario' %}?area={{ 'Evento de adoção'|urlencode }}">
 					<div class="card card-hover text-white text-center bg-dark-blue pb-2">
 						<div class="card-body">
 							<i class="bi bi-shop-window"></i>
@@ -105,7 +105,7 @@
 			</div>
 
 			<div class="col-12 col-md-6 col-lg-3">
-				<a class="text-decoration-none" href="{% url 'cadastrar_voluntario' %}?area=Cuidados e Bem-Estar">
+				<a class="text-decoration-none" href="{% url 'cadastrar_voluntario' %}?area={{ 'Cuidados e Bem-Estar'|urlencode }}">
 					<div class="card card-hover text-white text-center bg-dark-blue pb-2">
 						<div class="card-body">
 							<i class="bi bi-scissors"></i>
@@ -131,7 +131,7 @@
 			</div>
 
 			<div class="col-12 col-md-6 col-lg-3">
-				<a class="text-decoration-none" href="{% url 'cadastrar_voluntario' %}?area=Outras tarefas">
+				<a class="text-decoration-none" href="{% url 'cadastrar_voluntario' %}?area={{ 'Outras tarefas'|urlencode }}">
 					<div class="card card-hover text-white text-center bg-dark-blue pb-2">
 						<div class="card-body">
 							<i class="bi bi-clipboard-check"></i>
@@ -193,37 +193,40 @@
 		</div>
 		<div class="row">
 			<div class="col-12 col-md-12 col-lg-4">
-				<div class="card card-hover text-light text-center bg-white pb-2">
-					<div class="card-body text-dark">
-						<div class="img-area mb-4"><img src="{% static 'img/PHOTO-2025-03-13-15-02-01.jpg' %}" alt="Produtos da linha IMG Stores" class="img-fluid"></div>
-						<h3 class="card-title">Linha IMG STORES</h3>
-						<p class="lead">A linha IMG Stores traz "produtos do bem" e está disponível para você</p>
-						<button class="btn bg-warning text-dark" href="https://www.instagram.com/reel/DHQq3QlxeAR/?igsh=QkFFZ2hybHJScQ%3D%3D" target="_blank" rel="noopener" aria-label="Instagram do Souvenir">Acesse</button>
-						<a class="stretched-link" href="https://www.instagram.com/reel/DHQq3QlxeAR/?igsh=QkFFZ2hybHJScQ%3D%3D" target="_blank" rel="noopener"></a>
+				<a class="text-decoration-none" href="https://www.instagram.com/reel/DHQq3QlxeAR/?igsh=QkFFZ2hybHJScQ%3D%3D" target="_blank" rel="noopener" aria-label="Instagram do Souvenir">
+					<div class="card card-hover text-light text-center bg-white pb-2">
+						<div class="card-body text-dark">
+							<div class="img-area mb-4"><img src="{% static 'img/PHOTO-2025-03-13-15-02-01.jpg' %}" alt="Produtos da linha IMG Stores" class="img-fluid"></div>
+							<h3 class="card-title">Linha IMG STORES</h3>
+							<p class="lead">A linha IMG Stores traz "produtos do bem" e está disponível para você</p>
+							<span class="btn bg-warning text-dark">Acesse</span>
+						</div>
 					</div>
-				</div>
+				</a>
 			</div>
 			<div class="col-12 col-md-12 col-lg-4">
-				<div class="card card-hover text-light text-center bg-white pb-2">
-					<div class="card-body text-dark">
-						<div class="img-area mb-4"><img src="{% static 'img/PHOTO-2025-03-13-15-02-03 4.jpg' %}" alt="Vestuário" class="img-fluid"></div>
-						<h3 class="card-title">Vestuário</h3>
-						<p class="lead">Camisetas, viseiras, aventais e muito mais.</p>
-						<button class="btn bg-warning text-dark" href="https://www.instagram.com/reel/DHQq3QlxeAR/?igsh=QkFFZ2hybHJScQ%3D%3D" target="_blank" rel="noopener" aria-label="Instagram do Souvenir">Acesse</button>
-						<a class="stretched-link" href="https://www.instagram.com/reel/DHQq3QlxeAR/?igsh=QkFFZ2hybHJScQ%3D%3D" target="_blank" rel="noopener"></a>
+				<a class="text-decoration-none" href="https://www.instagram.com/reel/DHQq3QlxeAR/?igsh=QkFFZ2hybHJScQ%3D%3D" target="_blank" rel="noopener" aria-label="Instagram do Souvenir">
+					<div class="card card-hover text-light text-center bg-white pb-2">
+						<div class="card-body text-dark">
+							<div class="img-area mb-4"><img src="{% static 'img/PHOTO-2025-03-13-15-02-03_4.jpg' %}" alt="Vestuário" class="img-fluid"></div>
+							<h3 class="card-title">Vestuário</h3>
+							<p class="lead">Camisetas, viseiras, aventais e muito mais.</p>
+							<span class="btn bg-warning text-dark">Acesse</span>
+						</div>
 					</div>
-				</div>
+				</a>
 			</div>
 			<div class="col-12 col-md-12 col-lg-4">
-				<div class="card card-hover text-light text-center bg-white pb-2">
-					<div class="card-body text-dark">
-						<div class="img-area mb-4"><img src="{% static 'img/PHOTO-2025-03-13-15-02-01 2.jpg' %}" alt="Demais produtos" class="img-fluid"></div>
-						<h3 class="card-title">Demais Produtos</h3>
-						<p class="lead">Adesivos, bowls, canecas, mochilas saco, quadros e demais itens</p>
-						<button class="btn bg-warning text-dark" href="https://www.instagram.com/reel/DHQq3QlxeAR/?igsh=QkFFZ2hybHJScQ%3D%3D" target="_blank" rel="noopener" aria-label="Instagram do Souvenir">Acesse</button>
-						<a class="stretched-link" href="https://www.instagram.com/reel/DHQq3QlxeAR/?igsh=QkFFZ2hybHJScQ%3D%3D" target="_blank" rel="noopener"></a>
+				<a class="text-decoration-none" href="https://www.instagram.com/reel/DHQq3QlxeAR/?igsh=QkFFZ2hybHJScQ%3D%3D" target="_blank" rel="noopener" aria-label="Instagram do Souvenir">
+					<div class="card card-hover text-light text-center bg-white pb-2">
+						<div class="card-body text-dark">
+							<div class="img-area mb-4"><img src="{% static 'img/PHOTO-2025-03-13-15-02-01_2.jpg' %}" alt="Demais produtos" class="img-fluid"></div>
+							<h3 class="card-title">Demais Produtos</h3>
+							<p class="lead">Adesivos, bowls, canecas, mochilas saco, quadros e demais itens</p>
+							<span class="btn bg-warning text-dark">Acesse</span>
+						</div>
 					</div>
-				</div>
+				</a>
 			</div>
 		</div>
 	</div>
