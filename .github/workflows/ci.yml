@@ -2,7 +2,7 @@ name: Django CI
 
 on:
   push:
-    branches: [ "dev/filipe", "main" ] # Roda ao enviar código para sua branch ou para a main
+    branches: [ "dev/*", "main" ] # Roda ao enviar código para sua branch ou para a main
   pull_request:
     branches: [ "main" ] # Roda quando um PR for aberto visando a main
 
