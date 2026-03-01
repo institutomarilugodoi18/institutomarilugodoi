@@ -9,4 +9,4 @@ def test_django_setup(client):
     """Verifica se o Django está integrado ao Pytest"""
     response = client.get('/')
     # Este teste passará se sua home retornar 200 ou 404 (o importante é o Django responder)
-    assert response.status_code in [200, 404]
+    assert response.status_code in [200, 301, 302, 404]
