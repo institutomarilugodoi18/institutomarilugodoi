@@ -27,3 +27,8 @@ db/
 backup/
 *.sql
 *.dump
+# Pytest e Coverage
+.pytest_cache/
+.coverage
+reports/
+*.xml
