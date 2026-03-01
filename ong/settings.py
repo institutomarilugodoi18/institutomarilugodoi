@@ -5,6 +5,7 @@ Django settings for ong project.
 from pathlib import Path
 from decouple import config, Csv
 import os
+import sys
 
 # --- Paths ---
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -142,3 +143,15 @@ LOGGING = {
     'handlers': {'console': {'class': 'logging.StreamHandler'}},
     'root': {'handlers': ['console'], 'level': 'INFO'},
 }
+
+# --- Testes ---
+# Usar SQLite em memória para testes rápidos e isolados
+if 'pytest' in sys.modules or 'test' in sys.argv:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+        }
+    }
+    STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
+    WHITENOISE_MANIFEST_STRICT = False
