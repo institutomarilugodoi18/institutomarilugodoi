@@ -21,6 +21,7 @@ from .views import index  # importa a view criada
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name='index'),  # rota principal para o index.html
+    path('core/', include('apps.core.urls')),
     path('voluntarios/', include('apps.voluntarios.urls')),
-    path('', include('apps.core.urls')),
+    path("animais/", include("apps.animais.urls")),
 ]
