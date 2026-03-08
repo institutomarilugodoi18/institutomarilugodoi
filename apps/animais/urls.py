@@ -5,4 +5,5 @@ app_name = "animais"
 
 urlpatterns = [
     path("", views.lista_animais, name="lista"),
+    path("novo/", views.criar_animal, name="novo"),
 ]
