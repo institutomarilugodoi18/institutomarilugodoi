@@ -19,3 +19,5 @@
 - [ ] Upload de foto (MEDIA_URL/MEDIA_ROOT)
 - [ ] Otimização/compressão de imagem (Pillow) e limite de tamanho (ex.: ~300KB)
 - [ ] Dashboard de métricas + gráficos (Chart.js)
+- [ ] Produção (Brasil Cloud): configurar persistência/armazenamento de uploads (MEDIA_ROOT) e servir `/media/` (nginx/painel)
+- [ ] Remover `urlpatterns += static(...)` do `urls.py` após media em produção estar OK
