@@ -16,6 +16,9 @@ def cadastrar_voluntario(request):
     if request.method == 'POST':
         form = VoluntarioForm(request.POST)
         if form.is_valid():
+            if form.cleaned_data.get('website'):
+                return redirect('voluntario_sucesso')  # Proteção contra bots
+                        
             voluntario = form.save()
             # Envio de e-mail
             assunto = 'Novo Voluntário Cadastrado'
@@ -24,7 +27,7 @@ def cadastrar_voluntario(request):
                 f'foi cadastrado com sucesso na área {voluntario.area}!'
             )
             send_mail(
-                subject='assunto',
+                subject=assunto,
                 message=corpo,
                 from_email=settings.DEFAULT_FROM_EMAIL,
                 recipient_list=settings.NOTIFICATIONS_VOLUNTARIOS_TO,

@@ -2,6 +2,15 @@ from django import forms
 from .models import Voluntario
 
 class VoluntarioForm(forms.ModelForm):
+    website = forms.CharField(
+        required=False,
+        label='Deixe este campo em branco',
+        widget=forms.TextInput(attrs={
+            'autocomplete': 'off',
+            'tabindex': '-1',
+        })
+    )
+    
     class Meta:
         model = Voluntario
         fields = ['nome', 'email', 'telefone', 'endereco', 'cidade', 'area']

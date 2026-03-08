@@ -20,6 +20,10 @@
 						<h3 class="card-title text-center">Formulário</h3>
 						<form method="post">
 							{% csrf_token %}
+							<div style="display: none;">
+    							<label for="{{ form.website.id_for_label }}">Não preencha este campo</label>
+    							{{ form.website }}
+							</div>
 							<div class="mb-4">
 								<label for="email" class="form-label">E-mail</label>
 								{{ form.email|add_class:"form-control" }}
