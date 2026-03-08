@@ -4,6 +4,9 @@
 - [ ] Voluntários: deixar rolagem só nas linhas da tabela e cabeçalho fixo (sticky thead)
 - [ ] Voluntários: reposicionar botões (Painel/Início/Sair) no topo (e opcional no rodapé)
 - [ ] Padronizar saudação ("Olá, ...") e botão Sair: mover para navbar/base (definir padrão)
+- [ ] Padronizar listas internas (Voluntários e Animais): mesma barra superior (Painel/Relatórios/Sair + Olá usuário) e botões de ação no topo
+- [ ] Animais: ajustar ordem de colunas, formatar datas e adicionar ações (Editar/Excluir) + confirmação de exclusão
+- [ ] Voluntários: mover “Voltar” para Painel e Início para uma barra fixa (topo) e revisar o “Olá, admin!” (padronizar com Painel)
 
 ## URLs / Namespaces
 - [ ] Padronizar namespace do app voluntarios (app_name + include com namespace)
