@@ -1,37 +1,64 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login - Instituto Marilu Godoi{% endblock %}
 
 {% block content %}
-<div class="container py-5 mt-5 pt-5">
-  <h2 class="mb-4">Login</h2>
-  
-  {% if messages %}
-  {% for message in messages %}
-    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-      <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    {% endif %}
-  {% endfor %}
-{% endif %}
+<section class="d-flex align-items-center mt-5">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8 col-lg-5 col-xl-4">                
+                <div class="text-center mb-5 mt-4">
+                    <h2 class="fw-bold"><span class="text-warning">Área do</span> Colaborador</h2>
+                    <p class="text-muted small">Gestão e administração interna</p>
+                </div>
 
-  <div class="d-flex justify-content-center mt-5">
-    <div class="card shadow" style="width: 100%; max-width: 400px;">
-      <div class="card-body">
-        <form method="post">
-          {% csrf_token %}
-          <div class="mb-3">
-            <label for="username" class="form-label">Usuário</label>
-            <input type="text" name="username" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label for="password" class="form-label">Senha</label>
-            <input type="password" name="password" class="form-control" required>
-          </div>
-          <button type="submit" class="btn btn-primary">Entrar</button>
-        </form>
-      </div>
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show border-0 shadow-sm mb-4" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <div class="card border-0 shadow p-4 mb-2">
+                    <div class="card-body">
+                        <form method="post" autocomplete="off">
+                            {% csrf_token %}
+                            
+                            <div class="mb-4 text-center">
+                                <h4 class="card-title mb-0">Login</h4>
+                                <div class="bg-warning mx-auto mt-2" style="height: 3px; width: 30px; border-radius: 2px;"></div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="username" class="form-label fw-bold small text-uppercase text-muted">Usuário</label>
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text bg-white border-end text-muted"><i class="bi bi-person"></i></span>
+                                    <input type="text" name="username" class="form-control" id="username" placeholder="Digite seu usuário" required>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="password" class="form-label fw-bold small text-uppercase text-muted">Senha</label>
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text bg-white border-end text-muted"><i class="bi bi-lock"></i></span>
+                                    <input type="password" name="password" class="form-control" id="password" placeholder="********" required>
+                                </div>
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-warning fw-bold d-inline-flex align-items-center px-4 py-2 text-dark shadow-sm border-0">
+                                    <i class="bi bi-box-arrow-in-right me-2"></i> Entrar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
-  </div>
-</div>
+</section>
 {% endblock %}
