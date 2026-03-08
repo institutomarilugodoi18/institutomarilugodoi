@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5 pt-5">
+    <h2>Tem certeza que deseja excluir o animal <strong>{{ animal.nome }}</strong>?</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        <a href="{% url 'animais:lista_animais' %}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-danger">Sim, excluir</button>
+    </form>
+</div>
+{% endblock %}

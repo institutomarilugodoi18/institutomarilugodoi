@@ -2,13 +2,18 @@
 {% block content %}
 
 <div class="container py-5 mt-5 pt-4">
+
+  <!-- Barra superior (padrão área interna) -->
   <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-3">
     <div class="d-flex flex-wrap gap-2">
       <a href="{% url 'core:painel' %}" class="btn btn-outline-secondary btn-sm">⬅ Painel</a>
-      <a href="{% url 'animais:novo' %}" class="btn btn-success btn-sm">➕ Novo Animal</a>
+      <a href="{% url 'animais:criar_animal' %}" class="btn btn-success btn-sm">➕ Novo Animal</a>
+      <a href="{% url 'listar_voluntarios' %}" class="btn btn-outline-primary btn-sm">Voluntários</a>
+      <button class="btn btn-outline-dark btn-sm" disabled>Relatórios (em breve)</button>
     </div>
-    <div>
-      <span class="me-2 text-muted">Olá, {{ request.user.username }}!</span>
+
+    <div class="d-flex align-items-center gap-2">
+      <span class="text-muted">Olá, {{ request.user.username }}!</span>
       <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Sair</a>
     </div>
   </div>
@@ -22,16 +27,21 @@
       <table class="table table-striped table-bordered align-middle">
         <thead class="table-dark">
           <tr>
-            <th>Foto</th>
             <th>Nome</th>
             <th>Status</th>
             <th>Chegada</th>
             <th>Saída</th>
+            <th>Foto</th>
+            <th style="width: 180px;">Ações</th>
           </tr>
         </thead>
         <tbody>
           {% for a in animais %}
             <tr>
+              <td>{{ a.nome }}</td>
+              <td>{{ a.get_status_display }}</td>
+              <td>{{ a.data_chegada|default:"-" }}</td>
+              <td>{{ a.data_saida|default:"-" }}</td>
               <td style="width: 110px;">
                 {% if a.foto %}
                   <img src="{{ a.foto.url }}" alt="Foto de {{ a.nome }}" class="img-fluid rounded" style="max-height: 70px;">
@@ -39,19 +49,21 @@
                   <span class="text-muted">Sem foto</span>
                 {% endif %}
               </td>
-              <td>{{ a.nome }}</td>
-              <td>{{ a.get_status_display }}</td>
-              <td>{{ a.data_chegada|default:"-" }}</td>
-              <td>{{ a.data_saida|default:"-" }}</td>
+              <td>
+                <a href="{% url 'animais:editar_animal' a.id %}" class="btn btn-warning btn-sm">✏️ Editar</a>
+                <a href="{% url 'animais:excluir_animal' a.id %}" class="btn btn-danger btn-sm">🗑️ Excluir</a>
+              </td>
             </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
+
   {% else %}
     <p>Nenhum animal cadastrado ainda.</p>
-    <a href="{% url 'animais:novo' %}" class="btn btn-success">Cadastrar o primeiro</a>
+    <a href="{% url 'animais:criar_animal' %}" class="btn btn-success">Cadastrar o primeiro</a>
   {% endif %}
+
 </div>
 
 {% endblock %}
