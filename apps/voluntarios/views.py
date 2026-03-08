@@ -83,7 +83,7 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
-            return redirect('listar_voluntarios')  # ou outra view após login
+            return redirect('core:painel')  # ou outra view após login
         else:
             messages.error(request, 'Usuário ou senha inválidos.')
     

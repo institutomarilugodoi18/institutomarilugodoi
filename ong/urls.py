@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name='index'),  # rota principal para o index.html
     path('voluntarios/', include('apps.voluntarios.urls')),
+    path('', include('apps.core.urls')),
 ]

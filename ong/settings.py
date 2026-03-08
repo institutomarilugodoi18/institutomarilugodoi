@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'apps.core',
     'apps.souvenir',
     'apps.voluntarios',
     'widget_tweaks',
@@ -101,7 +102,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # --- Auth redirects ---
 LOGIN_URL = '/voluntarios/login/'
-LOGIN_REDIRECT_URL = '/voluntarios/lista/'
+LOGIN_REDIRECT_URL = '/core/painel/'
 LOGOUT_REDIRECT_URL = '/'
 
 # --- E-mail ---
