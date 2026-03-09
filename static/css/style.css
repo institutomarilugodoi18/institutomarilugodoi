@@ -80,17 +80,17 @@ body { background: #f1fbff; }
 
 /* ===== Acessibilidade: mensagens do formulário ===== */
 .invalid-feedback {
-  color: #ffc107 !important;
+  color: #dc3545 !important;
   font-size: 0.95rem;
   margin-top: 0.25rem;
   font-weight: 600;
 }
 .is-invalid {
-  border-color: #ffc107 !important;
+  border-color: #dc3545 !important;
   box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.2);
 }
 .form-global-alert {
-  background: #ffc107 !important;
+  background: #dc3545 !important;
   color: #fff !important;
   border: none;
   font-weight: 600;
