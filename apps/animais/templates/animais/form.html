@@ -1,66 +1,98 @@
-{% extends "base.html" %}
-{% block content %}
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% load static %}
 
-<div class="container py-5 mt-5 pt-4" style="max-width: 900px;">
-  <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-3">
-    <div class="d-flex flex-wrap gap-2">
-      <a href="{% url 'animais:lista' %}" class="btn btn-outline-secondary btn-sm">⬅ Voltar</a>
-      <a href="{% url 'core:painel' %}" class="btn btn-outline-secondary btn-sm">Painel</a>
+{% block title %}{% if form.instance.pk %}Editar {{ form.instance.nome }}{% else %}Cadastrar Novo Pet{% endif %} - Instituto Marilu Godoi{% endblock %}
+
+{% block content %}
+<section class="py-5 mt-4">
+  <div class="container">
+    <div class="text-center mb-5 mt-4">
+      <h2 class="fw-bold"><span class="text-warning">{% if form.instance.pk %}Editar{% else %}Cadastrar{% endif %}</span> Protegido</h2>
+      <p class="text-muted">Mantenha as informações dos nossos animais sempre atualizadas.</p>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-10 col-lg-8">
+        <div class="card border-0 shadow p-3 p-md-4 mb-5">
+          <div class="card-body">
+            <h4 class="card-title text-center mb-4">Dados do Animal</h4>
+            <div class="bg-warning mx-auto mb-4" style="height: 3px; width: 40px; border-radius: 2px;"></div>
+            
+            <!-- Formulário de cadastro/edição de animais -->
+            <form method="post" enctype="multipart/form-data" autocomplete="off">
+              {% csrf_token %}
+              {% if form.non_field_errors %}
+                <div class="alert alert-danger small">{{ form.non_field_errors }}</div>
+              {% endif %}
+              
+              <!-- Campo Nome -->
+              <div class="row">
+                <div class="col-12 mb-3">
+                  <label for="id_nome" class="form-label fw-bold small text-uppercase text-muted">Nome do Pet</label>
+                  {{ form.nome|add_class:"form-control shadow-sm" }}
+                  <div class="text-danger small">{{ form.nome.errors }}</div>
+                </div>
+              </div>
+              
+              <!-- Campos Data de Chegada, Data de Saída e Status -->
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <label for="id_data_chegada" class="form-label fw-bold small text-uppercase text-muted">Data de Chegada</label>
+                  {{ form.data_chegada|add_class:"form-control shadow-sm"|attr:"type:date" }}
+                  <div class="text-danger small">{{ form.data_chegada.errors }}</div>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="id_data_saida" class="form-label fw-bold small text-uppercase text-muted">Data de Saída</label>
+                  {{ form.data_saida|add_class:"form-control shadow-sm"|attr:"type:date" }}
+                  <div class="text-danger small">{{ form.data_saida.errors }}</div>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="id_status" class="form-label fw-bold small text-uppercase text-muted">Status Atual</label>
+                  {{ form.status|add_class:"form-select shadow-sm" }}
+                  <div class="text-danger small">{{ form.status.errors }}</div>
+                </div>
+              </div>
+              
+              <!-- Campo Descrição -->
+              <div class="row">
+                <div class="col-12 mb-3">
+                  <label for="id_descricao" class="form-label fw-bold small text-uppercase text-muted">História / Descrição</label>
+                  {{ form.descricao|add_class:"form-control shadow-sm"|attr:"rows:5" }}
+                  <div class="text-danger small">{{ form.descricao.errors }}</div>
+                </div>
+              </div>
+              
+              <!-- Campo Foto -->
+              <div class="row">
+                <div class="col-12 mb-4">
+                  <label for="id_foto" class="form-label fw-bold small text-uppercase text-muted">Foto do Animal</label>
+                  {{ form.foto|add_class:"form-control shadow-sm" }}
+                  {% if form.instance.foto %}
+                  <div class="mt-2 small text-muted">
+                    Foto atual: <a href="{{ form.instance.foto.url }}" target="_blank" class="text-primary text-decoration-none">Visualizar atual</a>
+                  </div>
+                  {% endif %}  
+                  <div class="text-danger small">{{ form.foto.errors }}</div>
+                </div>
+              </div>
+              
+              <hr class="my-4 text-muted opacity-25">
+              
+              <!-- Botões de ação -->
+              <div class="text-center d-flex justify-content-center gap-3">
+                <a href="{% url 'animais:lista' %}" class="btn btn-outline-secondary fw-bold px-4 py-2 shadow-sm">Cancelar</a>
+                <button type="submit" class="btn btn-warning fw-bold d-inline-flex align-items-center px-5 py-2 text-dark shadow-sm border-0">
+                  <i class="bi bi-heart-fill me-2"></i>
+                  {% if form.instance.pk %}Salvar Alterações{% else %}Cadastrar Pet{% endif %}
+                </button>
+              </div>
+              
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-
-  <h2 class="mb-3">{{ titulo|default:"Cadastrar Animal" }}</h2>
-
-  <form method="post" enctype="multipart/form-data" class="card p-4 shadow-sm">
-    {% csrf_token %}
-
-    {% if form.non_field_errors %}
-      <div class="alert alert-danger">{{ form.non_field_errors }}</div>
-    {% endif %}
-
-    <div class="row g-3">
-      <div class="col-md-6">
-        <label class="form-label">Nome</label>
-        {{ form.nome }}
-        {{ form.nome.errors }}
-      </div>
-
-      <div class="col-md-6">
-        <label class="form-label">Status</label>
-        {{ form.status }}
-        {{ form.status.errors }}
-      </div>
-
-      <div class="col-12">
-        <label class="form-label">Descrição</label>
-        {{ form.descricao }}
-        {{ form.descricao.errors }}
-      </div>
-
-      <div class="col-md-6">
-        <label class="form-label">Data de chegada</label>
-        {{ form.data_chegada }}
-        {{ form.data_chegada.errors }}
-      </div>
-
-      <div class="col-md-6">
-        <label class="form-label">Data de saída</label>
-        {{ form.data_saida }}
-        {{ form.data_saida.errors }}
-      </div>
-
-      <div class="col-12">
-        <label class="form-label">Foto</label>
-        {{ form.foto }}
-        {{ form.foto.errors }}
-      </div>
-    </div>
-
-    <div class="d-flex gap-2 mt-4">
-      <button type="submit" class="btn btn-primary">Salvar</button>
-      <a href="{% url 'animais:lista' %}" class="btn btn-outline-secondary">Cancelar</a>
-    </div>
-  </form>
-</div>
-
+</section>
 {% endblock %}

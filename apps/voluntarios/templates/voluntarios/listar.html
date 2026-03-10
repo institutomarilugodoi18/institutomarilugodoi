@@ -1,89 +1,92 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<div class="container py-5 mt-4">
+<div id="container" class="container py-5 mt-4">
 
+    <!-- Título e descrição -->
     <div class="text-center mb-5 mt-4">
-        <h2 class="fw-bold mb-2">
-            <span class="text-warning">Gestão de</span> Voluntários
-        </h2>
-        <p class="text-muted mb-0">
-            Gerencie os voluntários cadastrados no Instituto Marilu Godoi.
-        </p>
+        <h2 class="fw-bold mb-2"><span class="text-warning">Gestão de</span> Voluntários</h2>
+        <p class="text-muted mb-0">Gerencie os voluntários cadastrados no Instituto Marilu Godoi.</p>
     </div>
 
+    <!-- Cards de resumo -->
     {% if voluntarios or total_geral %}
-    <div class="row g-3 align-items-stretch mb-4">
-        <div class="col-lg col-md-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body d-flex align-items-center gap-3 p-3">
-                    <div class="rounded-3 bg-primary-subtle text-primary d-flex align-items-center justify-content-center flex-shrink-0"
-                         style="width: 48px; height: 48px;">
-                        <i class="bi bi-people fs-3"></i>
+    <div class="row g-2 align-items-stretch mb-4">
+        <!-- Card Total Geral -->
+        <div class="col-lg col-md-4">
+            <div class="card border-0 shadow-sm h-100 border-start border-primary border-3">
+                <div class="card-body d-flex align-items-center gap-2 p-2 px-3">
+                    <div class="rounded-circle bg-primary-subtle text-primary d-flex align-items-center justify-content-center flex-shrink-0"
+                         style="width: 32px; height: 32px;">
+                        <i class="bi bi-people fs-6"></i>
                     </div>
                     <div>
-                        <div class="fw-semibold fs-5 text-dark lh-1">{{ total_geral }}</div>
-                        <div class="text-muted small text-uppercase fw-semibold mt-1">Total</div>
+                        <div class="fw-bold fs-6 text-dark lh-1">{{ total_geral }}</div>
+                        <div class="text-muted small text-uppercase fw-semibold" style="font-size: 0.65rem;">Total</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-lg col-md-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body d-flex align-items-center gap-3 p-3">
-                    <div class="rounded-3 bg-info-subtle text-info border border-info-subtle d-flex align-items-center justify-content-center flex-shrink-0"
-                         style="width: 48px; height: 48px;">
-                        <i class="bi bi-people fs-3"></i>
+        <!-- Card Evento de Adoção -->
+        <div class="col-lg col-md-4">
+            <div class="card border-0 shadow-sm h-100 border-start border-info border-3">
+                <div class="card-body d-flex align-items-center gap-2 p-2 px-3">
+                    <div class="rounded-circle bg-info-subtle text-info border border-info-subtle d-flex align-items-center justify-content-center flex-shrink-0"
+                         style="width: 32px; height: 32px;">
+                        <i class="bi bi-calendar-event fs-6"></i>
                     </div>
                     <div>
-                        <div class="fw-semibold fs-5 text-dark lh-1">{{ qtd_evento_adocao }}</div>
-                        <div class="text-info-emphasis small text-uppercase fw-semibold mt-1">Evento de adoção</div>
+                        <div class="fw-bold fs-6 text-dark lh-1">{{ qtd_evento_adocao }}</div>
+                        <div class="text-info-emphasis small text-uppercase fw-semibold" style="font-size: 0.65rem;">Evento de Adoção</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-lg col-md-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body d-flex align-items-center gap-3 p-3">
-                    <div class="rounded-3 bg-success-subtle text-success border border-success-subtle d-flex align-items-center justify-content-center flex-shrink-0"
-                         style="width: 48px; height: 48px;">
-                        <i class="bi bi-people fs-3"></i>
+        <!-- Card Cuidados e Bem-Estar -->
+        <div class="col-lg col-md-4">
+            <div class="card border-0 shadow-sm h-100 border-start border-success border-3">
+                <div class="card-body d-flex align-items-center gap-2 p-2 px-3">
+                    <div class="rounded-circle bg-success-subtle text-success border border-success-subtle d-flex align-items-center justify-content-center flex-shrink-0"
+                         style="width: 32px; height: 32px;">
+                        <i class="bi bi-heart fs-6"></i>
                     </div>
                     <div>
-                        <div class="fw-semibold fs-5 text-dark lh-1">{{ qtd_cuidados }}</div>
-                        <div class="text-success-emphasis small text-uppercase fw-semibold mt-1">Cuidados e Bem-Estar</div>
+                        <div class="fw-bold fs-6 text-dark lh-1">{{ qtd_cuidados }}</div>
+                        <div class="text-success-emphasis small text-uppercase fw-semibold" style="font-size: 0.65rem;">Cuidados e Bem-Estar</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-lg col-md-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body d-flex align-items-center gap-3 p-3">
-                    <div class="rounded-3 bg-warning-subtle text-warning-emphasis border border-warning-subtle d-flex align-items-center justify-content-center flex-shrink-0"
-                         style="width: 48px; height: 48px;">
-                        <i class="bi bi-people fs-3"></i>
+        <!-- Card Associado -->
+        <div class="col-lg col-md-4">
+            <div class="card border-0 shadow-sm h-100 border-start border-warning border-3">
+                <div class="card-body d-flex align-items-center gap-2 p-2 px-3">
+                    <div class="rounded-circle bg-warning-subtle text-warning-emphasis border border-warning-subtle d-flex align-items-center justify-content-center flex-shrink-0"
+                         style="width: 32px; height: 32px;">
+                        <i class="bi bi-person-check fs-6"></i>
                     </div>
                     <div>
-                        <div class="fw-semibold fs-5 text-dark lh-1">{{ qtd_associado }}</div>
-                        <div class="text-warning-emphasis small text-uppercase fw-semibold mt-1">Associado</div>
+                        <div class="fw-bold fs-6 text-dark lh-1">{{ qtd_associado }}</div>
+                        <div class="text-warning-emphasis small text-uppercase fw-semibold" style="font-size: 0.65rem;">Associado</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-lg col-md-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body d-flex align-items-center gap-3 p-3">
-                    <div class="rounded-3 bg-secondary-subtle text-secondary border border-secondary-subtle d-flex align-items-center justify-content-center flex-shrink-0"
-                         style="width: 48px; height: 48px;">
-                        <i class="bi bi-people fs-3"></i>
+        <!-- Card Outras Tarefas -->
+        <div class="col-lg col-md-4">
+            <div class="card border-0 shadow-sm h-100 border-start border-secondary border-3">
+                <div class="card-body d-flex align-items-center gap-2 p-2 px-3">
+                    <div class="rounded-circle bg-secondary-subtle text-secondary border border-secondary-subtle d-flex align-items-center justify-content-center flex-shrink-0"
+                         style="width: 32px; height: 32px;">
+                        <i class="bi bi-list-task fs-6"></i>
                     </div>
                     <div>
-                        <div class="fw-semibold fs-5 text-dark lh-1">{{ qtd_outras }}</div>
-                        <div class="text-secondary-emphasis small text-uppercase fw-semibold mt-1">Outras Tarefas</div>
+                        <div class="fw-bold fs-6 text-dark lh-1">{{ qtd_outras }}</div>
+                        <div class="text-secondary-emphasis small text-uppercase fw-semibold" style="font-size: 0.65rem;">Outras Tarefas</div>
                     </div>
                 </div>
             </div>
@@ -91,14 +94,16 @@
     </div>
     {% endif %}
 
-    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-        <div class="card-body border-bottom bg-body-tertiary p-3 p-md-4">
-            <form method="get" class="row g-3 align-items-end">
+    <!-- Filtro e tabela -->
+    <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+        <!-- Filtro -->
+        <div class="card-body border-bottom bg-body-tertiary p-2 px-md-3">
+            <form method="get" class="row g-2 align-items-end">
                 <div class="col-lg-3 col-md-6">
-                    <label for="cidade" class="form-label fw-bold small text-uppercase text-muted mb-2">
+                    <label for="cidade" class="form-label fw-bold text-muted mb-1" style="font-size: 0.75rem; text-transform: uppercase;">
                         Cidade
                     </label>
-                    <select name="cidade" id="cidade" class="form-select shadow-sm">
+                    <select name="cidade" id="cidade" class="form-select form-select-sm shadow-sm">
                         <option value="">Todas</option>
                         <option value="São José dos Campos" {% if cidade_selecionada == "São José dos Campos" %}selected{% endif %}>São José dos Campos</option>
                         <option value="Jacareí" {% if cidade_selecionada == "Jacareí" %}selected{% endif %}>Jacareí</option>
@@ -107,11 +112,11 @@
                     </select>
                 </div>
 
-                <div class="col-lg-4 col-md-6">
-                    <label for="area" class="form-label fw-bold small text-uppercase text-muted mb-2">
+                <div class="col-lg-3 col-md-6">
+                    <label for="area" class="form-label fw-bold text-muted mb-1" style="font-size: 0.75rem; text-transform: uppercase;">
                         Área
                     </label>
-                    <select name="area" id="area" class="form-select shadow-sm">
+                    <select name="area" id="area" class="form-select form-select-sm shadow-sm">
                         <option value="">Todas</option>
                         <option value="Evento de adoção" {% if area_selecionada == "Evento de adoção" %}selected{% endif %}>Evento de adoção</option>
                         <option value="Cuidados e Bem-Estar" {% if area_selecionada == "Cuidados e Bem-Estar" %}selected{% endif %}>Cuidados e Bem-Estar</option>
@@ -120,16 +125,16 @@
                     </select>
                 </div>
 
-                <div class="col-lg-5 col-12">
+                <div class="col-lg-6 col-12 mt-2">
                     <div class="d-flex flex-wrap gap-2 justify-content-lg-end">
-                        <button type="submit" class="btn btn-warning btn-warning-hover fw-bold text-dark shadow-sm px-4">
+                        <button type="submit" class="btn btn-warning btn-sm fw-bold text-dark shadow-sm px-3">
                             Filtrar
                         </button>
-                        <a href="{% url 'listar_voluntarios' %}" class="btn btn-outline-secondary px-4">
+                        <a href="{% url 'listar_voluntarios' %}" class="btn btn-outline-secondary btn-sm px-3">
                             Limpar
                         </a>
                         <a href="{% url 'cadastrar_voluntario' %}"
-                           class="btn btn-primary fw-bold px-4 d-inline-flex align-items-center gap-2 shadow-sm">
+                           class="btn btn-primary btn-sm fw-bold px-3 d-inline-flex align-items-center gap-1 shadow-sm">
                             <i class="bi bi-person-plus"></i>
                             Novo Voluntário
                         </a>
@@ -138,54 +143,57 @@
             </form>
         </div>
 
+        <!-- Tabela -->
         {% if voluntarios %}
-        <div class="table-responsive" style="max-height: 420px; overflow-y: auto;">
+        <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
             <table class="table table-hover align-middle mb-0 bg-white">
                 <thead class="table-light position-sticky top-0 z-1">
-                    <tr class="text-uppercase small text-muted text-center align-middle">
-                        <th class="ps-4 py-3 fw-bold text-start">Nome</th>
-                        <th class="py-3 fw-bold">E-mail</th>
-                        <th class="py-3 fw-bold">Telefone</th>
-                        <th class="py-3 fw-bold">Cidade</th>
-                        <th class="py-3 fw-bold">Área</th>
-                        <th class="py-3 fw-bold">Ações</th>
+                    <tr class="text-uppercase text-muted text-center align-middle" style="font-size: 0.7rem;">
+                        <th class="ps-4 py-2 fw-bold text-start">Nome</th>
+                        <th class="py-2 fw-bold">E-mail</th>
+                        <th class="py-2 fw-bold">Telefone</th>
+                        <th class="py-2 fw-bold">Cidade</th>
+                        <th class="py-2 fw-bold">Área</th>
+                        <th class="py-2 fw-bold">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for v in voluntarios %}
-                    <tr>
-                        <td class="ps-4 fw-semibold text-dark small">{{ v.nome }}</td>
-                        <td class="text-muted small">{{ v.email }}</td>
-                        <td class="text-muted small">{{ v.telefone }}</td>
-                        <td class="text-muted small">{{ v.get_cidade_display|default:v.cidade }}</td>
-                        <td class="small text-center">
-                            {% if v.get_area_display|default:v.area == "Evento de adoção" %}
-                                <span class="badge rounded-pill bg-info-subtle text-info border border-info-subtle px-3 py-2 fw-semibold">
-                                    {{ v.get_area_display|default:v.area }}
-                                </span>
-                            {% elif v.get_area_display|default:v.area == "Cuidados e Bem-Estar" %}
-                                <span class="badge rounded-pill bg-success-subtle text-success border border-success-subtle px-3 py-2 fw-semibold">
-                                    {{ v.get_area_display|default:v.area }}
-                                </span>
-                            {% elif v.get_area_display|default:v.area == "Associado" %}
-                                <span class="badge rounded-pill bg-warning-subtle text-warning-emphasis border border-warning-subtle px-3 py-2 fw-semibold">
-                                    {{ v.get_area_display|default:v.area }}
-                                </span>
-                            {% else %}
-                                <span class="badge rounded-pill bg-secondary-subtle text-secondary border border-secondary-subtle px-3 py-2 fw-semibold">
-                                    {{ v.get_area_display|default:v.area }}
-                                </span>
-                            {% endif %}
+                    <tr style="font-size: 0.85rem;">
+                        <td class="ps-4 fw-semibold text-dark">{{ v.nome }}</td>
+                        <td class="text-muted">{{ v.email }}</td>
+                        <td class="text-muted text-center">{{ v.telefone }}</td>
+                        <td class="text-muted text-center">{{ v.get_cidade_display|default:v.cidade }}</td>
+                        <td class="text-center">
+                            {% with area_val=v.get_area_display|default:v.area %}
+                                {% if area_val == "Evento de adoção" %}
+                                    <span class="badge rounded-pill bg-info-subtle text-info border border-info-subtle px-2 py-1 fw-semibold" style="font-size: 0.7rem;">
+                                        {{ area_val }}
+                                    </span>
+                                {% elif area_val == "Cuidados e Bem-Estar" %}
+                                    <span class="badge rounded-pill bg-success-subtle text-success border border-success-subtle px-2 py-1 fw-semibold" style="font-size: 0.7rem;">
+                                        {{ area_val }}
+                                    </span>
+                                {% elif area_val == "Associado" %}
+                                    <span class="badge rounded-pill bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2 py-1 fw-semibold" style="font-size: 0.7rem;">
+                                        {{ area_val }}
+                                    </span>
+                                {% else %}
+                                    <span class="badge rounded-pill bg-secondary-subtle text-secondary border border-secondary-subtle px-2 py-1 fw-semibold" style="font-size: 0.7rem;">
+                                        {{ area_val }}
+                                    </span>
+                                {% endif %}
+                            {% endwith %}
                         </td>
                         <td class="text-center">
-                            <div class="d-inline-flex gap-2">
+                            <div class="d-inline-flex gap-1">
                                 <a href="{% url 'editar_voluntario' v.id %}"
-                                   class="btn btn-sm btn-outline-primary"
+                                   class="btn btn-sm py-0 px-1 btn-outline-primary"
                                    title="Editar">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
                                 <a href="{% url 'excluir_voluntario' v.id %}"
-                                   class="btn btn-sm btn-outline-danger"
+                                   class="btn btn-sm py-0 px-1 btn-outline-danger"
                                    title="Excluir">
                                     <i class="bi bi-trash"></i>
                                 </a>
@@ -197,21 +205,25 @@
             </table>
         </div>
 
-        <div class="card-footer bg-white border-0 py-3 px-4 text-muted">
+        <!-- Rodapé da tabela -->
+        <div class="card-footer bg-white border-0 py-2 px-4 text-muted small">
             Exibindo <span class="fw-semibold text-dark">{{ voluntarios_count }}</span> de
             <span class="fw-semibold text-dark">{{ voluntarios_count }}</span> voluntário{{ voluntarios_count|pluralize:"s" }}
         </div>
         {% else %}
-        <div class="card-body p-5 text-center bg-white">
-            <i class="bi bi-search fs-1 text-muted mb-3 d-block"></i>
-            <p class="text-muted mb-0">Nenhum voluntário encontrado.</p>
+
+        <!-- Mensagem de nenhum resultado -->
+        <div class="card-body p-4 text-center bg-white">
+            <i class="bi bi-search fs-4 text-muted mb-2 d-block"></i>
+            <p class="text-muted mb-0 small">Nenhum voluntário encontrado.</p>
         </div>
         {% endif %}
     </div>
 
-    <div class="mt-4">
-        <a href="{% url 'core:painel' %}" class="text-decoration-none text-muted small fw-bold">
-            <i class="bi bi-arrow-left me-1"></i> VOLTAR AO PAINEL
+    <!-- Link para voltar ao topo -->
+    <div class="mt-3">
+        <a href="#container" class="text-decoration-none text-muted small fw-bold">
+            <i class="bi bi-arrow-left me-1"></i> VOLTAR AO TOPO
         </a>
     </div>
 </div>
