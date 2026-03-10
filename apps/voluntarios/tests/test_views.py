@@ -102,7 +102,7 @@ def test_listar_voluntarios_sem_filtros(usuario, voluntario, client):
     response = client.get(reverse("listar_voluntarios"))
 
     assert response.status_code == 200
-    assert response.context["voluntarios_count"] == 1
+    assert response.context["total_geral"] == 1
     assert len(response.context["voluntarios"]) == 1
     assert response.context["cidade_selecionada"] is None
     assert response.context["area_selecionada"] is None
@@ -133,9 +133,10 @@ def test_listar_voluntarios_filtra_por_cidade(usuario, client):
 
     assert response.status_code == 200
     assert response.context["cidade_selecionada"] == "São José dos Campos"
-    assert response.context["voluntarios_count"] == 1
+    assert response.context["total_geral"] == 2
 
     voluntarios = response.context["voluntarios"]
+    assert len(voluntarios) == 1
     assert voluntarios[0].cidade == "São José dos Campos"
 
 
@@ -164,9 +165,10 @@ def test_listar_voluntarios_filtra_por_area(usuario, client):
 
     assert response.status_code == 200
     assert response.context["area_selecionada"] == "Evento de adoção"
-    assert response.context["voluntarios_count"] == 1
+    assert response.context["total_geral"] == 2
 
     voluntarios = response.context["voluntarios"]
+    assert len(voluntarios) == 1
     assert voluntarios[0].area == "Evento de adoção"
 
 
