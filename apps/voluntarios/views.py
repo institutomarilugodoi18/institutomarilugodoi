@@ -50,8 +50,11 @@ def listar_voluntarios(request):
     cidade = request.GET.get('cidade')
     area = request.GET.get('area')
 
-    voluntarios = Voluntario.objects.all()
-    voluntarios_count = voluntarios.count()
+    # Base geral para os cards
+    voluntarios_base = Voluntario.objects.all().order_by('nome')
+
+    # Query da tabela, que será filtrada
+    voluntarios = voluntarios_base
 
     if cidade:
         voluntarios = voluntarios.filter(cidade=cidade)
@@ -59,13 +62,30 @@ def listar_voluntarios(request):
     if area:
         voluntarios = voluntarios.filter(area=area)
 
+    # Contagem da tabela filtrada
     voluntarios_count = voluntarios.count()
+
+    # Contagens gerais dos cards
+    total_geral = voluntarios_base.count()
+    qtd_evento_adocao = voluntarios_base.filter(area='Evento de adoção').count()
+    qtd_cuidados = voluntarios_base.filter(area='Cuidados e Bem-Estar').count()
+    qtd_associado = voluntarios_base.filter(area='Associado').count()
+    qtd_outras = voluntarios_base.filter(area='Outras tarefas').count()
 
     context = {
         'voluntarios': voluntarios,
         'cidade_selecionada': cidade,
         'area_selecionada': area,
+
+        # tabela
         'voluntarios_count': voluntarios_count,
+
+        # cards
+        'total_geral': total_geral,
+        'qtd_evento_adocao': qtd_evento_adocao,
+        'qtd_cuidados': qtd_cuidados,
+        'qtd_associado': qtd_associado,
+        'qtd_outras': qtd_outras,
     }
 
     return render(request, 'voluntarios/listar.html', context)

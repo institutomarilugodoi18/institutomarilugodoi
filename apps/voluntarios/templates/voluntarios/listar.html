@@ -1,86 +1,219 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<div class="container py-5 mt-5 pt-5">
-  <div class="section-header text-center pb-5">
-    <h2>Voluntários</h2>
-    <p>Gerencie cadastros e acompanhe os interessados em ajudar.</p>
-  </div>
-  <div class="d-flex justify-content-between align-items-center p-3 bg-light border-bottom">
-    <div>
-      Olá, {{ request.user.username }}!
-    </div>
-    <div>
-      <a href="{% url 'core:painel' %}" class="btn btn-outline-secondary btn-sm">Painel</a>
-      <a href="/" class="btn btn-outline-secondary btn-sm">Início</a>
-      <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Sair</a>
-    </div>
-  </div>
+<div class="container py-5 mt-5">
 
-  <form method="get" class="row g-3 mb-4">
-    <div class="col-md-4">
-      <label for="cidade" class="form-label">Filtrar por Cidade:</label>
-      <select name="cidade" id="cidade" class="form-select">
-        <option value="">Todas</option>
-        <option value="São José dos Campos" {% if cidade_selecionada == "São José dos Campos" %}selected{% endif %}>São José dos Campos</option>
-        <option value="Jacareí" {% if cidade_selecionada == "Jacareí" %}selected{% endif %}>Jacareí</option>
-        <option value="Caçapava" {% if cidade_selecionada == "Caçapava" %}selected{% endif %}>Caçapava</option>
-        <option value="Taubaté" {% if cidade_selecionada == "Taubaté" %}selected{% endif %}>Taubaté</option>
-      </select>
+    <div class="text-center mb-5 mt-4">
+        <h2 class="fw-bold mb-2">
+            <span class="text-warning">Gestão de</span> Voluntários
+        </h2>
+        <p class="text-muted mb-0">
+            Gerencie os voluntários cadastrados no Instituto Marilu Godoi.
+        </p>
     </div>
-  
-    <div class="col-md-4">
-      <label for="area" class="form-label">Filtrar por Área:</label>
-      <select name="area" id="area" class="form-select">
-        <option value="">Todas</option>
-        <option value="Evento de adoção" {% if area_selecionada == "Evento de adoção" %}selected{% endif %}>Evento de adoção</option>
-        <option value="Cuidados e Bem-Estar" {% if area_selecionada == "Cuidados e Bem-Estar" %}selected{% endif %}>Cuidados e Bem-Estar</option>
-        <option value="Associado" {% if area_selecionada == "Associado" %}selected{% endif %}>Associado</option>
-        <option value="Outras tarefas" {% if area_selecionada == "Outras tarefas" %}selected{% endif %}>Outras tarefas</option>
-      </select>
-    </div>
-  
-    <div class="col-md-4 align-self-end">
-      <button type="submit" class="btn btn-primary">Filtrar</button>
-      <a href="{% url 'listar_voluntarios' %}" class="btn btn-outline-secondary">Limpar Filtros</a>
-    </div>
-  </form>  
 
-  {% if voluntarios %}
-    <p><strong>Total de voluntários:</strong> {{ voluntarios_count }}</p>
-    <div class="table-responsive">
-      <table class="table table-striped table-bordered">
-        <thead class="table-dark">
-          <tr>
-            <th>Nome</th>
-            <th>Email</th>
-            <th>Telefone</th>
-            <th>Endereço</th>
-            <th>Cidade</th>
-            <th>Área</th>
-            <th><a href="{% url 'cadastrar_voluntario' %}" class="btn btn-success btn-sm">➕ Novo Voluntário</a></th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for v in voluntarios %}
-            <tr>
-              <td>{{ v.nome }}</td>
-              <td>{{ v.email }}</td>
-              <td>{{ v.telefone }}</td>
-              <td>{{ v.endereco }}</td>
-              <td>{{ v.get_cidade_display|default:v.cidade }}</td>
-              <td>{{ v.get_area_display|default:v.area }}</td>
-              <td>{% if v.id %}<a href="{% url 'editar_voluntario' v.id %}" class="btn btn-warning btn-sm">✏️ Editar</a>{% else %}<span class="text-muted">ID inválido</span>{% endif %} <a href="{% url 'excluir_voluntario' v.id %}" class="btn btn-danger btn-sm">🗑️ Excluir</a></td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  {% else %}
-    <p>Nenhum voluntário cadastrado ainda.</p>
-  {% endif %}
+    {% if voluntarios or total_geral %}
+    <div class="row g-3 align-items-stretch mb-4">
+        <div class="col-lg col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center gap-3 p-3">
+                    <div class="rounded-3 bg-primary-subtle text-primary d-flex align-items-center justify-content-center flex-shrink-0"
+                         style="width: 48px; height: 48px;">
+                        <i class="bi bi-people fs-5"></i>
+                    </div>
+                    <div>
+                        <div class="fw-semibold fs-4 text-dark lh-1">{{ total_geral }}</div>
+                        <div class="text-muted small text-uppercase fw-semibold mt-1">Total</div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-  <a href="/" class="btn btn-secondary mt-4">Início</a>
-  <a href="{% url 'core:painel' %}" class="btn btn-secondary mt-4">Painel</a>
+        <div class="col-lg col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center gap-3 p-3">
+                    <div class="rounded-3 bg-info-subtle text-info border border-info-subtle d-flex align-items-center justify-content-center flex-shrink-0"
+                         style="width: 48px; height: 48px;">
+                        <i class="bi bi-calendar-event fs-5"></i>
+                    </div>
+                    <div>
+                        <div class="fw-semibold fs-4 text-dark lh-1">{{ qtd_evento_adocao }}</div>
+                        <div class="text-info-emphasis small text-uppercase fw-semibold mt-1">Evento</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center gap-3 p-3">
+                    <div class="rounded-3 bg-success-subtle text-success border border-success-subtle d-flex align-items-center justify-content-center flex-shrink-0"
+                         style="width: 48px; height: 48px;">
+                        <i class="bi bi-heart-pulse fs-5"></i>
+                    </div>
+                    <div>
+                        <div class="fw-semibold fs-4 text-dark lh-1">{{ qtd_cuidados }}</div>
+                        <div class="text-success-emphasis small text-uppercase fw-semibold mt-1">Cuidados</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center gap-3 p-3">
+                    <div class="rounded-3 bg-warning-subtle text-warning-emphasis border border-warning-subtle d-flex align-items-center justify-content-center flex-shrink-0"
+                         style="width: 48px; height: 48px;">
+                        <i class="bi bi-person-badge fs-5"></i>
+                    </div>
+                    <div>
+                        <div class="fw-semibold fs-4 text-dark lh-1">{{ qtd_associado }}</div>
+                        <div class="text-warning-emphasis small text-uppercase fw-semibold mt-1">Associado</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center gap-3 p-3">
+                    <div class="rounded-3 bg-secondary-subtle text-secondary border border-secondary-subtle d-flex align-items-center justify-content-center flex-shrink-0"
+                         style="width: 48px; height: 48px;">
+                        <i class="bi bi-list-task fs-5"></i>
+                    </div>
+                    <div>
+                        <div class="fw-semibold fs-4 text-dark lh-1">{{ qtd_outras }}</div>
+                        <div class="text-secondary-emphasis small text-uppercase fw-semibold mt-1">Outras</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="card-body border-bottom bg-body-tertiary p-3 p-md-4">
+            <form method="get" class="row g-3 align-items-end">
+                <div class="col-lg-3 col-md-6">
+                    <label for="cidade" class="form-label fw-bold small text-uppercase text-muted mb-2">
+                        Cidade
+                    </label>
+                    <select name="cidade" id="cidade" class="form-select shadow-sm">
+                        <option value="">Todas</option>
+                        <option value="São José dos Campos" {% if cidade_selecionada == "São José dos Campos" %}selected{% endif %}>São José dos Campos</option>
+                        <option value="Jacareí" {% if cidade_selecionada == "Jacareí" %}selected{% endif %}>Jacareí</option>
+                        <option value="Caçapava" {% if cidade_selecionada == "Caçapava" %}selected{% endif %}>Caçapava</option>
+                        <option value="Taubaté" {% if cidade_selecionada == "Taubaté" %}selected{% endif %}>Taubaté</option>
+                    </select>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <label for="area" class="form-label fw-bold small text-uppercase text-muted mb-2">
+                        Área
+                    </label>
+                    <select name="area" id="area" class="form-select shadow-sm">
+                        <option value="">Todas</option>
+                        <option value="Evento de adoção" {% if area_selecionada == "Evento de adoção" %}selected{% endif %}>Evento de adoção</option>
+                        <option value="Cuidados e Bem-Estar" {% if area_selecionada == "Cuidados e Bem-Estar" %}selected{% endif %}>Cuidados e Bem-Estar</option>
+                        <option value="Associado" {% if area_selecionada == "Associado" %}selected{% endif %}>Associado</option>
+                        <option value="Outras tarefas" {% if area_selecionada == "Outras tarefas" %}selected{% endif %}>Outras tarefas</option>
+                    </select>
+                </div>
+
+                <div class="col-lg-5 col-12">
+                    <div class="d-flex flex-wrap gap-2 justify-content-lg-end">
+                        <button type="submit" class="btn btn-warning btn-warning-hover fw-bold text-dark shadow-sm px-4">
+                            Filtrar
+                        </button>
+                        <a href="{% url 'listar_voluntarios' %}" class="btn btn-outline-secondary px-4">
+                            Limpar
+                        </a>
+                        <a href="{% url 'cadastrar_voluntario' %}"
+                           class="btn btn-primary fw-bold px-4 d-inline-flex align-items-center gap-2 shadow-sm">
+                            <i class="bi bi-person-plus"></i>
+                            Novo Voluntário
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        {% if voluntarios %}
+        <div class="table-responsive" style="max-height: 420px; overflow-y: auto;">
+            <table class="table table-hover align-middle mb-0 bg-white">
+                <thead class="table-light position-sticky top-0 z-1">
+                    <tr class="text-uppercase small text-muted text-center align-middle">
+                        <th class="ps-4 py-3 fw-bold text-start">Nome</th>
+                        <th class="py-3 fw-bold">E-mail</th>
+                        <th class="py-3 fw-bold">Telefone</th>
+                        <th class="py-3 fw-bold">Cidade</th>
+                        <th class="py-3 fw-bold">Área</th>
+                        <th class="py-3 fw-bold">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for v in voluntarios %}
+                    <tr>
+                        <td class="ps-4 fw-semibold text-dark small">{{ v.nome }}</td>
+                        <td class="text-muted small">{{ v.email }}</td>
+                        <td class="text-muted small">{{ v.telefone }}</td>
+                        <td class="text-muted small">{{ v.get_cidade_display|default:v.cidade }}</td>
+                        <td class="small text-center">
+                            {% if v.get_area_display|default:v.area == "Evento de adoção" %}
+                                <span class="badge rounded-pill bg-info-subtle text-info border border-info-subtle px-3 py-2 fw-semibold">
+                                    {{ v.get_area_display|default:v.area }}
+                                </span>
+                            {% elif v.get_area_display|default:v.area == "Cuidados e Bem-Estar" %}
+                                <span class="badge rounded-pill bg-success-subtle text-success border border-success-subtle px-3 py-2 fw-semibold">
+                                    {{ v.get_area_display|default:v.area }}
+                                </span>
+                            {% elif v.get_area_display|default:v.area == "Associado" %}
+                                <span class="badge rounded-pill bg-warning-subtle text-warning-emphasis border border-warning-subtle px-3 py-2 fw-semibold">
+                                    {{ v.get_area_display|default:v.area }}
+                                </span>
+                            {% else %}
+                                <span class="badge rounded-pill bg-secondary-subtle text-secondary border border-secondary-subtle px-3 py-2 fw-semibold">
+                                    {{ v.get_area_display|default:v.area }}
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            <div class="d-inline-flex gap-2">
+                                <a href="{% url 'editar_voluntario' v.id %}"
+                                   class="btn btn-sm btn-outline-primary"
+                                   title="Editar">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <a href="{% url 'excluir_voluntario' v.id %}"
+                                   class="btn btn-sm btn-outline-danger"
+                                   title="Excluir">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card-footer bg-white border-0 py-3 px-4 text-muted">
+            Exibindo <span class="fw-semibold text-dark">{{ voluntarios_count }}</span> de
+            <span class="fw-semibold text-dark">{{ voluntarios_count }}</span> voluntário{{ voluntarios_count|pluralize:"s" }}
+        </div>
+        {% else %}
+        <div class="card-body p-5 text-center bg-white">
+            <i class="bi bi-search fs-1 text-muted mb-3 d-block"></i>
+            <p class="text-muted mb-0">Nenhum voluntário encontrado.</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="mt-4">
+        <a href="{% url 'core:painel' %}" class="text-decoration-none text-muted small fw-bold">
+            <i class="bi bi-arrow-left me-1"></i> VOLTAR AO PAINEL
+        </a>
+    </div>
 </div>
+
 {% endblock %}

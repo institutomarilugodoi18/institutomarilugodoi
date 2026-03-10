@@ -184,7 +184,7 @@ def test_login_view_post_valido_redireciona(usuario, client):
     })
 
     assert response.status_code == 302
-    assert response.url == reverse("listar_voluntarios")
+    assert response.url == reverse("painel")
 
 
 @pytest.mark.django_db

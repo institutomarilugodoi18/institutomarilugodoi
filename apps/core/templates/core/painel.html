@@ -1,52 +1,48 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section class="services section-padding" aria-labelledby="painel-titulo">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="section-header text-center pb-5">
-          <h2 id="painel-titulo">Painel</h2>
-          <p>Escolha um módulo para gerenciar cadastros e acompanhar indicadores.</p>
-        </div>
-      </div>
+<section class="py-5 mt-5">
+  <div class="container mt-5">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold"><span class="text-warning">Painel de</span> Controle</h2>
+      <p class="text-muted small">Gerencie as operações do Instituto em um só lugar.</p>
     </div>
 
-    <div class="row g-4">
+    <div class="row g-4 justify-content-center">
       <div class="col-12 col-md-6 col-lg-4">
-        <a class="text-decoration-none" href="/voluntarios/lista/">
-          <div class="card card-hover text-white text-center bg-dark-blue pb-2 h-100">
+        <a class="text-decoration-none" href="{% url 'listar_voluntarios' %}">
+          <div class="card card-hover border-0 h-100 text-center p-4">
             <div class="card-body">
-              <i class="bi bi-people fs-1"></i>
-              <h3 class="card-title mt-2">Voluntários</h3>
-              <p class="lead">Gerencie cadastros e acompanhe os interessados em ajudar.</p>
-              <span class="btn bg-warning text-dark">Acessar</span>
+              <i class="bi bi-people fs-1 text-warning mb-3 d-block"></i>
+              <h4 class="fw-bold text-dark">Voluntários</h4>
+              <p class="text-muted small mb-4">Gestão completa de membros e áreas de atuação.</p>
+              <span class="btn btn-warning btn-sm fw-bold px-4 text-dark shadow-sm">Acessar Módulo</span>
             </div>
           </div>
         </a>
       </div>
 
       <div class="col-12 col-md-6 col-lg-4">
-        <a class="text-decoration-none" href="/animais/">
-          <div class="card card-hover text-white text-center bg-dark-blue pb-2 h-100">
+        <a class="text-decoration-none" href="{% url 'animais:lista' %}">
+          <div class="card card-hover border-0 h-100 text-center p-4">
             <div class="card-body">
-              <i class="bi bi-heart fs-1"></i>
-              <h3 class="card-title mt-2">Animais</h3>
-              <p class="lead">Cadastre animais atendidos e organize status de adoção.</p>
-              <span class="btn bg-warning text-dark">Acessar</span>
+              <i class="bi bi-heart-fill fs-1 mb-3 d-block text-warning"></i>
+              <h4 class="fw-bold text-dark">Animais</h4>
+              <p class="text-muted small mb-4">Controle de adoções e registros de saúde.</p>
+              <span class="btn btn-warning btn-sm fw-bold px-4 text-dark shadow-sm">Acessar Módulo</span>
             </div>
           </div>
         </a>
       </div>
 
       <div class="col-12 col-md-6 col-lg-4">
-        <a class="text-decoration-none" href="#" aria-disabled="true">
-          <div class="card card-hover text-white text-center bg-dark-blue pb-2 h-100 opacity-75">
+        <a class="text-decoration-none" href="#">
+          <div class="card card-hover border-0 h-100 text-center p-4">
             <div class="card-body">
-              <i class="bi bi-bar-chart fs-1"></i>
-              <h3 class="card-title mt-2">Relatórios</h3>
-              <p class="lead">Veja métricas e gráficos da operação do Instituto.</p>
-              <span class="btn bg-secondary text-light">Em breve</span>
+              <i class="bi bi-bar-chart-line-fill fs-1 text-warning mb-3 d-block"></i>
+              <h4 class="fw-bold text-dark">Relatórios</h4>
+              <p class="text-muted small mb-4">Indicadores e métricas de desempenho real.</p>
+              <span class="btn btn-warning btn-sm fw-bold px-4 text-dark shadow-sm">Acessar Módulo</span>
             </div>
           </div>
         </a>

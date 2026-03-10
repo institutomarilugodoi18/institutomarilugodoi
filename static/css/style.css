@@ -48,7 +48,7 @@ body { background: #f1fbff; }
 .team .card-body i { font-size: 20px; }
 
 /* Efeito hover sobre os cards das seções */
-.card-hover { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.card-hover { transition: transform 0.3s ease, box-shadow 0.3s ease; box-shadow: 15px 15px 40px rgba(0, 0, 0, 0.15);}
 .card-hover:hover { transform: scale(1.05); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.8); }
 
 /* Efeito hover sobre as imagens das seções */
@@ -201,4 +201,19 @@ body { background: #f1fbff; }
     transition: none;
     transform: none !important;
   }
+}
+
+/* ===== Dropdown do usuário ===== */
+.user-menu {
+  --bs-dropdown-link-hover-bg: #dee2e6;
+  --bs-dropdown-link-hover-color: #212529;
+  --bs-dropdown-link-active-bg: #ced4da;
+  --bs-dropdown-link-active-color: #212529;
+}
+
+.user-menu .dropdown-item.text-danger:hover,
+.user-menu .dropdown-item.text-danger:focus,
+.user-menu .dropdown-item.text-danger:active {
+  color: #dc3545 !important;
+  background-color: #f8d7da;
 }
