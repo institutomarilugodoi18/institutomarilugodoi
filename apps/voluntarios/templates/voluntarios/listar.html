@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<div class="container py-5 mt-5">
+<div class="container py-5 mt-4">
 
     <div class="text-center mb-5 mt-4">
         <h2 class="fw-bold mb-2">
@@ -19,10 +19,10 @@
                 <div class="card-body d-flex align-items-center gap-3 p-3">
                     <div class="rounded-3 bg-primary-subtle text-primary d-flex align-items-center justify-content-center flex-shrink-0"
                          style="width: 48px; height: 48px;">
-                        <i class="bi bi-people fs-5"></i>
+                        <i class="bi bi-people fs-3"></i>
                     </div>
                     <div>
-                        <div class="fw-semibold fs-4 text-dark lh-1">{{ total_geral }}</div>
+                        <div class="fw-semibold fs-5 text-dark lh-1">{{ total_geral }}</div>
                         <div class="text-muted small text-uppercase fw-semibold mt-1">Total</div>
                     </div>
                 </div>
@@ -34,11 +34,11 @@
                 <div class="card-body d-flex align-items-center gap-3 p-3">
                     <div class="rounded-3 bg-info-subtle text-info border border-info-subtle d-flex align-items-center justify-content-center flex-shrink-0"
                          style="width: 48px; height: 48px;">
-                        <i class="bi bi-calendar-event fs-5"></i>
+                        <i class="bi bi-people fs-3"></i>
                     </div>
                     <div>
-                        <div class="fw-semibold fs-4 text-dark lh-1">{{ qtd_evento_adocao }}</div>
-                        <div class="text-info-emphasis small text-uppercase fw-semibold mt-1">Evento</div>
+                        <div class="fw-semibold fs-5 text-dark lh-1">{{ qtd_evento_adocao }}</div>
+                        <div class="text-info-emphasis small text-uppercase fw-semibold mt-1">Evento de adoção</div>
                     </div>
                 </div>
             </div>
@@ -49,11 +49,11 @@
                 <div class="card-body d-flex align-items-center gap-3 p-3">
                     <div class="rounded-3 bg-success-subtle text-success border border-success-subtle d-flex align-items-center justify-content-center flex-shrink-0"
                          style="width: 48px; height: 48px;">
-                        <i class="bi bi-heart-pulse fs-5"></i>
+                        <i class="bi bi-people fs-3"></i>
                     </div>
                     <div>
-                        <div class="fw-semibold fs-4 text-dark lh-1">{{ qtd_cuidados }}</div>
-                        <div class="text-success-emphasis small text-uppercase fw-semibold mt-1">Cuidados</div>
+                        <div class="fw-semibold fs-5 text-dark lh-1">{{ qtd_cuidados }}</div>
+                        <div class="text-success-emphasis small text-uppercase fw-semibold mt-1">Cuidados e Bem-Estar</div>
                     </div>
                 </div>
             </div>
@@ -64,10 +64,10 @@
                 <div class="card-body d-flex align-items-center gap-3 p-3">
                     <div class="rounded-3 bg-warning-subtle text-warning-emphasis border border-warning-subtle d-flex align-items-center justify-content-center flex-shrink-0"
                          style="width: 48px; height: 48px;">
-                        <i class="bi bi-person-badge fs-5"></i>
+                        <i class="bi bi-people fs-3"></i>
                     </div>
                     <div>
-                        <div class="fw-semibold fs-4 text-dark lh-1">{{ qtd_associado }}</div>
+                        <div class="fw-semibold fs-5 text-dark lh-1">{{ qtd_associado }}</div>
                         <div class="text-warning-emphasis small text-uppercase fw-semibold mt-1">Associado</div>
                     </div>
                 </div>
@@ -79,11 +79,11 @@
                 <div class="card-body d-flex align-items-center gap-3 p-3">
                     <div class="rounded-3 bg-secondary-subtle text-secondary border border-secondary-subtle d-flex align-items-center justify-content-center flex-shrink-0"
                          style="width: 48px; height: 48px;">
-                        <i class="bi bi-list-task fs-5"></i>
+                        <i class="bi bi-people fs-3"></i>
                     </div>
                     <div>
-                        <div class="fw-semibold fs-4 text-dark lh-1">{{ qtd_outras }}</div>
-                        <div class="text-secondary-emphasis small text-uppercase fw-semibold mt-1">Outras</div>
+                        <div class="fw-semibold fs-5 text-dark lh-1">{{ qtd_outras }}</div>
+                        <div class="text-secondary-emphasis small text-uppercase fw-semibold mt-1">Outras Tarefas</div>
                     </div>
                 </div>
             </div>
