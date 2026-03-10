@@ -38,7 +38,7 @@
                     </div>
                     <div>
                         <div class="fw-bold fs-6 text-dark lh-1">{{ qtd_disponivel }}</div>
-                        <div class="text-info-emphasis small text-uppercase fw-semibold" style="font-size: 0.65rem;">Disponíveis para Adoção</div>
+                        <div class="text-info-emphasis small text-uppercase fw-semibold" style="font-size: 0.65rem;">{{ Status.DISPONIVEL.label }}</div>
                     </div>
                 </div>
             </div>
@@ -54,7 +54,7 @@
                     </div>
                     <div>
                         <div class="fw-bold fs-6 text-dark lh-1">{{ qtd_adotado }}</div>
-                        <div class="text-success-emphasis small text-uppercase fw-semibold" style="font-size: 0.65rem;">Adotados</div>
+                        <div class="text-success-emphasis small text-uppercase fw-semibold" style="font-size: 0.65rem;">{{ Status.ADOTADO.label }}</div>
                     </div>
                 </div>
             </div>
@@ -70,7 +70,7 @@
                     </div>
                     <div>
                         <div class="fw-bold fs-6 text-dark lh-1">{{ qtd_tratamento }}</div>
-                        <div class="text-warning-emphasis small text-uppercase fw-semibold" style="font-size: 0.65rem;">Em Tratamento</div>
+                        <div class="text-warning-emphasis small text-uppercase fw-semibold" style="font-size: 0.65rem;">{{ Status.TRATAMENTO.label }}</div>
                     </div>
                 </div>
             </div>
@@ -89,9 +89,9 @@
                     </label>
                     <select name="status" id="status" class="form-select form-select-sm shadow-sm">
                         <option value="">Todos os Status</option>
-                        <option value="disponivel" {% if status_selecionado == "disponivel" %}selected{% endif %}>Disponível para Adoção</option>
-                        <option value="adotado" {% if status_selecionado == "adotado" %}selected{% endif %}>Adotado</option>
-                        <option value="tratamento" {% if status_selecionado == "tratamento" %}selected{% endif %}>Em Tratamento</option>
+                        <option value="DISPONIVEL" {% if status_selecionado == "DISPONIVEL" %}selected{% endif %}>{{ Status.DISPONIVEL.label }}</option>
+                        <option value="ADOTADO" {% if status_selecionado == "ADOTADO" %}selected{% endif %}>{{ Status.ADOTADO.label }}</option>
+                        <option value="TRATAMENTO" {% if status_selecionado == "TRATAMENTO" %}selected{% endif %}>{{ Status.TRATAMENTO.label }}</option>
                     </select>
                 </div>
 
@@ -142,17 +142,17 @@
                         <td class="fw-semibold text-dark">{{ a.nome }}</td>
                         <td class="text-center">
                             {% with status_val=a.status %}
-                                {% if status_val == "disponivel" %}
+                                {% if status_val == "DISPONIVEL" %}
                                     <span class="badge rounded-pill bg-info-subtle text-info border border-info-subtle px-2 py-1 fw-semibold" style="font-size: 0.7rem;">
-                                        Disponível
+                                        {{ a.get_status_display }}
                                     </span>
-                                {% elif status_val == "adotado" %}
+                                {% elif status_val == "ADOTADO" %}
                                     <span class="badge rounded-pill bg-success-subtle text-success border border-success-subtle px-2 py-1 fw-semibold" style="font-size: 0.7rem;">
-                                        Adotado
+                                        {{ a.get_status_display }}
                                     </span>
                                 {% else %}
                                     <span class="badge rounded-pill bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2 py-1 fw-semibold" style="font-size: 0.7rem;">
-                                        Tratamento
+                                        {{ a.get_status_display }}
                                     </span>
                                 {% endif %}
                             {% endwith %}

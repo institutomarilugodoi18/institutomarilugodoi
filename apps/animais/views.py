@@ -7,9 +7,29 @@ from .forms import AnimalForm
 
 @login_required
 def lista_animais(request):
+    status_selecionado = request.GET.get('status')
     animais = Animal.objects.all().order_by("-criado_em")
-    return render(request, "animais/lista.html", {"animais": animais})
 
+    # Contagens para os Cards de Resumo
+    total_geral = animais.count()
+    qtd_disponivel = animais.filter(status="DISPONIVEL").count()
+    qtd_adotado = animais.filter(status="ADOTADO").count()
+    qtd_tratamento = animais.filter(status="TRATAMENTO").count()
+
+    # Aplicação do Filtro
+    if status_selecionado:
+        animais = animais.filter(status=status_selecionado)
+
+    context = {
+        "animais": animais,
+        "total_geral": total_geral,
+        "qtd_disponivel": qtd_disponivel,
+        "qtd_adotado": qtd_adotado,
+        "qtd_tratamento": qtd_tratamento,
+        "status_selecionado": status_selecionado,
+        "Status": Animal.Status, 
+    }
+    return render(request, "animais/lista.html", context)
 
 @login_required
 def criar_animal(request):
@@ -17,7 +37,7 @@ def criar_animal(request):
         form = AnimalForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect("animais:lista_animais")
+            return redirect("animais:lista")
     else:
         form = AnimalForm()
 
@@ -36,7 +56,7 @@ def editar_animal(request, id):
         form = AnimalForm(request.POST, request.FILES, instance=animal)
         if form.is_valid():
             form.save()
-            return redirect("animais:lista_animais")
+            return redirect("animais:lista")
     else:
         form = AnimalForm(instance=animal)
 
@@ -53,7 +73,7 @@ def excluir_animal(request, id):
 
     if request.method == "POST":
         animal.delete()
-        return redirect("animais:lista_animais")
+        return redirect("animais:lista")
 
     return render(
         request,

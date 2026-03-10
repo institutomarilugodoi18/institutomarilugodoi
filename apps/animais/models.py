@@ -3,8 +3,9 @@ from django.db import models
 # Create your models here.
 class Animal(models.Model):
     class Status(models.TextChoices):
-        DISPONIVEL = "DISPONIVEL", "Disponível"
+        DISPONIVEL = "DISPONIVEL", "Disponível para Adoção"
         ADOTADO = "ADOTADO", "Adotado"
+        TRATAMENTO = "TRATAMENTO", "Em Tratamento"
 
     nome = models.CharField(max_length=120)
     descricao = models.TextField(blank=True)
