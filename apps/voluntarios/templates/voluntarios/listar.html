@@ -38,7 +38,7 @@
                     </div>
                     <div>
                         <div class="fw-bold fs-6 text-dark lh-1">{{ qtd_evento_adocao }}</div>
-                        <div class="text-info-emphasis small text-uppercase fw-semibold" style="font-size: 0.65rem;">Evento de Adoção</div>
+                        <div class="text-info-emphasis small text-uppercase fw-semibold" style="font-size: 0.65rem;">{{ Areas.ADOCAO.label }}</div>
                     </div>
                 </div>
             </div>
@@ -54,7 +54,7 @@
                     </div>
                     <div>
                         <div class="fw-bold fs-6 text-dark lh-1">{{ qtd_cuidados }}</div>
-                        <div class="text-success-emphasis small text-uppercase fw-semibold" style="font-size: 0.65rem;">Cuidados e Bem-Estar</div>
+                        <div class="text-success-emphasis small text-uppercase fw-semibold" style="font-size: 0.65rem;">{{ Areas.CUIDADOS.label }}</div>
                     </div>
                 </div>
             </div>
@@ -70,7 +70,7 @@
                     </div>
                     <div>
                         <div class="fw-bold fs-6 text-dark lh-1">{{ qtd_associado }}</div>
-                        <div class="text-warning-emphasis small text-uppercase fw-semibold" style="font-size: 0.65rem;">Associado</div>
+                        <div class="text-warning-emphasis small text-uppercase fw-semibold" style="font-size: 0.65rem;">{{ Areas.ASSOCIADO.label }}</div>
                     </div>
                 </div>
             </div>
@@ -86,7 +86,7 @@
                     </div>
                     <div>
                         <div class="fw-bold fs-6 text-dark lh-1">{{ qtd_outras }}</div>
-                        <div class="text-secondary-emphasis small text-uppercase fw-semibold" style="font-size: 0.65rem;">Outras Tarefas</div>
+                        <div class="text-secondary-emphasis small text-uppercase fw-semibold" style="font-size: 0.65rem;">{{ Areas.OUTRAS.label }}</div>
                     </div>
                 </div>
             </div>
@@ -105,10 +105,9 @@
                     </label>
                     <select name="cidade" id="cidade" class="form-select form-select-sm shadow-sm">
                         <option value="">Todas</option>
-                        <option value="São José dos Campos" {% if cidade_selecionada == "São José dos Campos" %}selected{% endif %}>São José dos Campos</option>
-                        <option value="Jacareí" {% if cidade_selecionada == "Jacareí" %}selected{% endif %}>Jacareí</option>
-                        <option value="Caçapava" {% if cidade_selecionada == "Caçapava" %}selected{% endif %}>Caçapava</option>
-                        <option value="Taubaté" {% if cidade_selecionada == "Taubaté" %}selected{% endif %}>Taubaté</option>
+                        {% for choice in Cidades.choices %}
+                        <option value="{{ choice.0 }}" {% if cidade_selecionada == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
+                        {% endfor %}
                     </select>
                 </div>
 
@@ -118,10 +117,9 @@
                     </label>
                     <select name="area" id="area" class="form-select form-select-sm shadow-sm">
                         <option value="">Todas</option>
-                        <option value="Evento de adoção" {% if area_selecionada == "Evento de adoção" %}selected{% endif %}>Evento de adoção</option>
-                        <option value="Cuidados e Bem-Estar" {% if area_selecionada == "Cuidados e Bem-Estar" %}selected{% endif %}>Cuidados e Bem-Estar</option>
-                        <option value="Associado" {% if area_selecionada == "Associado" %}selected{% endif %}>Associado</option>
-                        <option value="Outras tarefas" {% if area_selecionada == "Outras tarefas" %}selected{% endif %}>Outras tarefas</option>
+                        {% for choice in Areas.choices %}
+                        <option value="{{ choice.0 }}" {% if area_selecionada == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
+                        {% endfor %}
                     </select>
                 </div>
 
@@ -165,22 +163,22 @@
                         <td class="text-muted text-center">{{ v.telefone }}</td>
                         <td class="text-muted text-center">{{ v.get_cidade_display|default:v.cidade }}</td>
                         <td class="text-center">
-                            {% with area_val=v.get_area_display|default:v.area %}
-                                {% if area_val == "Evento de adoção" %}
+                            {% with area_val=v.area %}
+                                {% if area_val == Areas.ADOCAO %}
                                     <span class="badge rounded-pill bg-info-subtle text-info border border-info-subtle px-2 py-1 fw-semibold" style="font-size: 0.7rem;">
-                                        {{ area_val }}
+                                        {{ v.get_area_display }}
                                     </span>
-                                {% elif area_val == "Cuidados e Bem-Estar" %}
+                                {% elif area_val == Areas.CUIDADOS %}
                                     <span class="badge rounded-pill bg-success-subtle text-success border border-success-subtle px-2 py-1 fw-semibold" style="font-size: 0.7rem;">
-                                        {{ area_val }}
+                                        {{ v.get_area_display }}
                                     </span>
-                                {% elif area_val == "Associado" %}
+                                {% elif area_val == Areas.ASSOCIADO %}
                                     <span class="badge rounded-pill bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2 py-1 fw-semibold" style="font-size: 0.7rem;">
-                                        {{ area_val }}
+                                        {{ v.get_area_display }}
                                     </span>
                                 {% else %}
                                     <span class="badge rounded-pill bg-secondary-subtle text-secondary border border-secondary-subtle px-2 py-1 fw-semibold" style="font-size: 0.7rem;">
-                                        {{ area_val }}
+                                        {{ v.get_area_display }}
                                     </span>
                                 {% endif %}
                             {% endwith %}
