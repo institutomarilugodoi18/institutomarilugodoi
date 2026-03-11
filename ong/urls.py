@@ -25,7 +25,8 @@ urlpatterns = [
     path('', index, name='index'),  # rota principal para o index.html
     path('core/', include('apps.core.urls')),
     path('voluntarios/', include('apps.voluntarios.urls')),
-    path("animais/", include("apps.animais.urls")),
+    path('animais/', include('apps.animais.urls')),
+    path('relatorios/', include('apps.relatorios.urls')),
 ]
 
 # Servir uploads (media) apenas em desenvolvimento

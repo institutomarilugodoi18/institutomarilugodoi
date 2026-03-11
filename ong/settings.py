@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.animais',
     'apps.core',
+    'apps.relatorios',
     'apps.souvenir',
     'apps.voluntarios',
     'widget_tweaks',
