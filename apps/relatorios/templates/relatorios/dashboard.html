@@ -61,9 +61,14 @@
         </div>
     </div>
 
-    <div class="mt-5">
-        <a href="{% url 'core:painel' %}" class="text-decoration-none text-muted small fw-bold">
+    <!-- Link para voltar ao painel e ao topo -->
+    <div class="mt-4 d-flex justify-content-between align-items-center">
+        <a href="{% url 'core:painel' %}" class="text-decoration-none text-muted small fw-bold shadow-hover-link">
             <i class="bi bi-arrow-left me-1"></i> VOLTAR AO PAINEL
+        </a>
+
+        <a href="#container" class="text-decoration-none text-muted small fw-bold shadow-hover-link">
+            VOLTAR AO TOPO <i class="bi bi-arrow-up ms-1"></i>
         </a>
     </div>
 </div>
