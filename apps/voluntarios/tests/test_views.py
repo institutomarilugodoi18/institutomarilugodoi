@@ -103,6 +103,7 @@ def test_listar_voluntarios_sem_filtros(usuario, voluntario, client):
 
     assert response.status_code == 200
     assert response.context["total_geral"] == 1
+    assert response.context["voluntarios_count"] == 1
     assert len(response.context["voluntarios"]) == 1
     assert response.context["cidade_selecionada"] is None
     assert response.context["area_selecionada"] is None
@@ -117,27 +118,27 @@ def test_listar_voluntarios_filtra_por_cidade(usuario, client):
         email="maria1@email.com",
         telefone="(12) 99999-1111",
         endereco="Rua A",
-        cidade="São José dos Campos",
-        area="Evento de adoção",
+        cidade=Voluntario.Cidade.SJC,
+        area=Voluntario.Area.ADOCAO,
     )
     Voluntario.objects.create(
         nome="José",
         email="jose@email.com",
         telefone="(12) 99999-2222",
         endereco="Rua B",
-        cidade="Jacareí",
-        area="Associado",
+        cidade=Voluntario.Cidade.JACAREI,
+        area=Voluntario.Area.ASSOCIADO,
     )
 
-    response = client.get(reverse("listar_voluntarios"), {"cidade": "São José dos Campos"})
+    response = client.get(reverse("listar_voluntarios"), {"cidade": Voluntario.Cidade.SJC})
 
     assert response.status_code == 200
-    assert response.context["cidade_selecionada"] == "São José dos Campos"
+    assert response.context["cidade_selecionada"] == Voluntario.Cidade.SJC
     assert response.context["total_geral"] == 2
+    assert response.context["voluntarios_count"] == 1
 
     voluntarios = response.context["voluntarios"]
-    assert len(voluntarios) == 1
-    assert voluntarios[0].cidade == "São José dos Campos"
+    assert voluntarios[0].cidade == Voluntario.Cidade.SJC
 
 
 @pytest.mark.django_db
@@ -149,27 +150,42 @@ def test_listar_voluntarios_filtra_por_area(usuario, client):
         email="maria2@email.com",
         telefone="(12) 99999-1111",
         endereco="Rua A",
-        cidade="São José dos Campos",
-        area="Evento de adoção",
+        cidade=Voluntario.Cidade.SJC,
+        area=Voluntario.Area.ADOCAO,
     )
     Voluntario.objects.create(
         nome="José",
         email="jose2@email.com",
         telefone="(12) 99999-2222",
         endereco="Rua B",
-        cidade="Jacareí",
-        area="Associado",
+        cidade=Voluntario.Cidade.JACAREI,
+        area=Voluntario.Area.ASSOCIADO,
     )
 
-    response = client.get(reverse("listar_voluntarios"), {"area": "Evento de adoção"})
+    response = client.get(reverse("listar_voluntarios"), {"area": Voluntario.Area.ADOCAO})
 
     assert response.status_code == 200
-    assert response.context["area_selecionada"] == "Evento de adoção"
+    assert response.context["area_selecionada"] == Voluntario.Area.ADOCAO
     assert response.context["total_geral"] == 2
+    assert response.context["voluntarios_count"] == 1
 
     voluntarios = response.context["voluntarios"]
-    assert len(voluntarios) == 1
-    assert voluntarios[0].area == "Evento de adoção"
+    assert voluntarios[0].area == Voluntario.Area.ADOCAO
+
+
+@pytest.mark.django_db
+def test_listar_voluntarios_contagem_cards(usuario, client):
+    client.force_login(usuario)
+    Voluntario.objects.create(
+        nome="Ana", email="ana@email.com", telefone="(12) 99999-3333", endereco="Rua C",
+        cidade=Voluntario.Cidade.SJC, area=Voluntario.Area.ADOCAO
+    )
+    
+    response = client.get(reverse("listar_voluntarios"))
+    
+    # Verifica se a "mágica" das contagens por área está chegando no context
+    assert response.context["qtd_evento_adocao"] == 1
+    assert response.context["qtd_associado"] == 0
 
 
 @pytest.mark.django_db

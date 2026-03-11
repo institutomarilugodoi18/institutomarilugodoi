@@ -8,21 +8,30 @@ from .forms import AnimalForm
 @login_required
 def lista_animais(request):
     status_selecionado = request.GET.get('status')
-    animais = Animal.objects.all().order_by("-criado_em")
+    
+    # 1. Base total (Todos os animais do banco para os cards e totalizador)
+    animais_base = Animal.objects.all()
+    total_geral = animais_base.count()
 
-    # Contagens para os Cards de Resumo
-    total_geral = animais.count()
-    qtd_disponivel = animais.filter(status="DISPONIVEL").count()
-    qtd_adotado = animais.filter(status="ADOTADO").count()
-    qtd_tratamento = animais.filter(status="TRATAMENTO").count()
+    # 2. Query que será exibida na tabela (com ordenação)
+    animais_listagem = animais_base.order_by("-criado_em")
 
-    # Aplicação do Filtro
+    # 3. Contagens fixas para os Cards (Sempre sobre a base total)
+    qtd_disponivel = animais_base.filter(status=Animal.Status.DISPONIVEL).count()
+    qtd_adotado = animais_base.filter(status=Animal.Status.ADOTADO).count()
+    qtd_tratamento = animais_base.filter(status=Animal.Status.TRATAMENTO).count()
+
+    # 4. Aplicação do Filtro na listagem
     if status_selecionado:
-        animais = animais.filter(status=status_selecionado)
+        animais_listagem = animais_listagem.filter(status=status_selecionado)
+
+    # 5. Contagem do que está sendo exibido agora
+    animais_count = animais_listagem.count()
 
     context = {
-        "animais": animais,
-        "total_geral": total_geral,
+        "animais": animais_listagem,       # Lista para o loop for
+        "animais_count": animais_count,   # Para o "Exibindo X"
+        "total_geral": total_geral,       # Para o "de Y"
         "qtd_disponivel": qtd_disponivel,
         "qtd_adotado": qtd_adotado,
         "qtd_tratamento": qtd_tratamento,

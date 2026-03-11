@@ -49,25 +49,35 @@ from .models import Voluntario
 def listar_voluntarios(request):
     cidade = request.GET.get('cidade')
     area = request.GET.get('area')
+    
+    # 1. Base total (todos os voluntários do banco)
     voluntarios_base = Voluntario.objects.all().order_by('nome')
+    total_geral = voluntarios_base.count()
 
-    # Contagens dinâmicas usando as chaves do Model
+    # 2. Criamos a lista filtrada
+    # Usamos a lógica de desempacotamento de dicionário que você já tinha, que é bem elegante
+    voluntarios_filtrados = voluntarios_base.filter(
+        **({ 'cidade': cidade } if cidade else {}),
+        **({ 'area': area } if area else {})
+    )
+
+    # 3. Contagem específica da lista que será exibida na tabela
+    voluntarios_count = voluntarios_filtrados.count()
+
     context = {
-        'voluntarios': voluntarios_base.filter(
-            **({ 'cidade': cidade } if cidade else {}),
-            **({ 'area': area } if area else {})
-        ),
+        'voluntarios': voluntarios_filtrados,
+        'voluntarios_count': voluntarios_count,  # Quantos aparecem na tabela agora
+        'total_geral': total_geral,              # Quantos existem no total
         'cidade_selecionada': cidade,
         'area_selecionada': area,
-        'total_geral': voluntarios_base.count(),
         
-        # Mágica: Contagens automáticas usando as chaves da classe Area
+        # Contagens fixas para os cards (sempre baseadas no total geral)
         'qtd_evento_adocao': voluntarios_base.filter(area=Voluntario.Area.ADOCAO).count(),
         'qtd_cuidados': voluntarios_base.filter(area=Voluntario.Area.CUIDADOS).count(),
         'qtd_associado': voluntarios_base.filter(area=Voluntario.Area.ASSOCIADO).count(),
         'qtd_outras': voluntarios_base.filter(area=Voluntario.Area.OUTRAS).count(),
         
-        # Passamos as classes para o Template usar os .labels
+        # Classes para os labels dinâmicos
         'Areas': Voluntario.Area,
         'Cidades': Voluntario.Cidade,
     }

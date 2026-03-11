@@ -181,7 +181,8 @@
 
         <!-- Rodapé da tabela -->
         <div class="card-footer bg-white border-0 py-2 px-4 text-muted small">
-            Exibindo <span class="fw-semibold text-dark">{{ animais|length }}</span> pet{{ animais|length|pluralize:"s" }}
+            Exibindo <span class="fw-semibold text-dark">{{ animais_count }}</span> de
+            <span class="fw-semibold text-dark">{{ total_geral }}</span> pet{{ total_geral|pluralize:"s" }}
         </div>
         
         <!-- Mensagem de nenhum resultado -->
