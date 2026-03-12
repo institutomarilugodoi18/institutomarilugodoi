@@ -15,8 +15,8 @@ jobs:
       - name: Configurar SSH
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
           ssh-keyscan -p ${{ vars.SSH_PORT }} ${{ vars.SSH_HOST }} >> ~/.ssh/known_hosts
 
       - name: Deploy para o servidor
@@ -27,9 +27,9 @@ jobs:
             --exclude '__pycache__' \
             --exclude 'media' \
             --exclude 'reports' \
-            -e "ssh -p ${{ vars.SSH_PORT }}" ./ ${{ vars.SSH_USER }}@${{ vars.SSH_HOST }}:/home/${{ vars.SSH_USER }}/app/
+            -e "ssh -i ~/.ssh/deploy_key -p ${{ vars.SSH_PORT }}" ./ ${{ vars.SSH_USER }}@${{ vars.SSH_HOST }}:/home/${{ vars.SSH_USER }}/app/
 
-          ssh -p ${{ vars.SSH_PORT }} ${{ vars.SSH_USER }}@${{ vars.SSH_HOST }} << 'EOF'
+          ssh -i ~/.ssh/deploy_key -p ${{ vars.SSH_PORT }} ${{ vars.SSH_USER }}@${{ vars.SSH_HOST }} << 'EOF'
             cd /home/application/app/
             source venv/bin/activate
             pip install -r requirements.txt
