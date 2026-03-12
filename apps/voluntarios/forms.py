@@ -11,9 +11,21 @@ class VoluntarioForm(forms.ModelForm):
             'tabindex': '-1',
         })
     )
+
+    cidade = forms.ChoiceField(
+        choices=Voluntario.Cidade.choices,
+        widget=forms.RadioSelect(attrs={'class': 'form-check-input'}),
+        required=True,
+    )
+
+    area = forms.ChoiceField(
+        choices=Voluntario.Area.choices,
+        widget=forms.RadioSelect(attrs={'class': 'form-check-input'}),
+        required=True,
+    )
     
     class Meta:
         model = Voluntario
         fields = ['nome', 'email', 'telefone', 'endereco', 'cidade', 'area']
-        # Removemos o dicionário widgets daqui, 
+        # Removemos a parte estética do dicionário widgets daqui, 
         # pois o frontend (HTML + widget_tweaks) já cuida disso.
