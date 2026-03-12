@@ -1,0 +1,209 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div id="container" class="container py-5 mt-4">
+
+    <!-- Título e descrição -->
+    <div class="text-center mb-5 mt-4">
+        <h2 class="fw-bold mb-2"><span class="text-warning">Gestão de</span> Animais</h2>
+        <p class="text-muted mb-0">Controle de acolhimento, adoções e registros de saúde dos pets.</p>
+    </div>
+
+    <!-- Cards de resumo -->
+    {% if animais or total_geral %}
+    <div class="row g-2 align-items-stretch mb-4">
+        <!-- Card Total Geral -->
+        <div class="col-lg col-md-4">
+            <div class="card border-0 shadow-sm h-100 border-start border-primary border-3">
+                <div class="card-body d-flex align-items-center gap-2 p-2 px-3">
+                    <div class="rounded-circle bg-primary-subtle text-primary d-flex align-items-center justify-content-center flex-shrink-0"
+                         style="width: 32px; height: 32px;">
+                        <i class="bi bi-hearts fs-6"></i>
+                    </div>
+                    <div>
+                        <div class="fw-bold fs-6 text-dark lh-1">{{ total_geral }}</div>
+                        <div class="text-muted small text-uppercase fw-semibold" style="font-size: 0.65rem;">Total</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Disponíveis para Adoção -->
+        <div class="col-lg col-md-4">
+            <div class="card border-0 shadow-sm h-100 border-start border-info border-3">
+                <div class="card-body d-flex align-items-center gap-2 p-2 px-3">
+                    <div class="rounded-circle bg-info-subtle text-info d-flex align-items-center justify-content-center flex-shrink-0"
+                         style="width: 32px; height: 32px;">
+                        <i class="bi bi-house-heart fs-6"></i>
+                    </div>
+                    <div>
+                        <div class="fw-bold fs-6 text-dark lh-1">{{ qtd_disponivel }}</div>
+                        <div class="text-info-emphasis small text-uppercase fw-semibold" style="font-size: 0.65rem;">{{ Status.DISPONIVEL.label }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Adotados -->
+        <div class="col-lg col-md-4">
+            <div class="card border-0 shadow-sm h-100 border-start border-success border-3">
+                <div class="card-body d-flex align-items-center gap-2 p-2 px-3">
+                    <div class="rounded-circle bg-success-subtle text-success d-flex align-items-center justify-content-center flex-shrink-0"
+                         style="width: 32px; height: 32px;">
+                        <i class="bi bi-check-circle fs-6"></i>
+                    </div>
+                    <div>
+                        <div class="fw-bold fs-6 text-dark lh-1">{{ qtd_adotado }}</div>
+                        <div class="text-success-emphasis small text-uppercase fw-semibold" style="font-size: 0.65rem;">{{ Status.ADOTADO.label }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Em Tratamento -->
+        <div class="col-lg col-md-4">
+            <div class="card border-0 shadow-sm h-100 border-start border-warning border-3">
+                <div class="card-body d-flex align-items-center gap-2 p-2 px-3">
+                    <div class="rounded-circle bg-warning-subtle text-warning-emphasis d-flex align-items-center justify-content-center flex-shrink-0"
+                         style="width: 32px; height: 32px;">
+                        <i class="bi bi-heart-pulse fs-6"></i>
+                    </div>
+                    <div>
+                        <div class="fw-bold fs-6 text-dark lh-1">{{ qtd_tratamento }}</div>
+                        <div class="text-warning-emphasis small text-uppercase fw-semibold" style="font-size: 0.65rem;">{{ Status.TRATAMENTO.label }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Filtro e tabela -->
+    <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+        <!-- Filtro -->
+        <div class="card-body border-bottom bg-body-tertiary p-2 px-md-3">
+            <form method="get" class="row g-2 align-items-end">
+                <div class="col-lg-4 col-md-6">
+                    <label for="status" class="form-label fw-bold text-muted mb-1" style="font-size: 0.75rem; text-transform: uppercase;">
+                        Filtrar por Status
+                    </label>
+                    <select name="status" id="status" class="form-select form-select-sm shadow-sm" onchange="this.form.submit()">
+                        <option value="">Todos os Status</option>
+                        <option value="DISPONIVEL" {% if status_selecionado == "DISPONIVEL" %}selected{% endif %}>{{ Status.DISPONIVEL.label }}</option>
+                        <option value="ADOTADO" {% if status_selecionado == "ADOTADO" %}selected{% endif %}>{{ Status.ADOTADO.label }}</option>
+                        <option value="TRATAMENTO" {% if status_selecionado == "TRATAMENTO" %}selected{% endif %}>{{ Status.TRATAMENTO.label }}</option>
+                    </select>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <a href="{% url 'animais:lista' %}" class="btn btn-outline-secondary btn-sm px-3">
+                            Limpar
+                    </a>
+                </div>
+
+                <div class="col-lg-4 col-12 mt-2">
+                    <div class="d-flex flex-wrap gap-2 justify-content-lg-end">
+                        <a href="{% url 'animais:criar_animal' %}"
+                           class="btn btn-primary btn-sm fw-bold px-3 d-inline-flex align-items-center gap-1 shadow-sm">
+                            <i class="bi bi-plus-circle"></i>
+                            Novo Animal
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Tabela -->
+        {% if animais %}
+        <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+            <table class="table table-hover align-middle mb-0 bg-white">
+                <thead class="table-light position-sticky top-0 z-1">
+                    <tr class="text-uppercase text-muted text-center align-middle" style="font-size: 0.7rem;">
+                        <th class="ps-4 py-2 fw-bold text-start">Foto</th>
+                        <th class="py-2 fw-bold text-start">Nome</th>
+                        <th class="py-2 fw-bold">Status</th>
+                        <th class="py-2 fw-bold">Chegada</th>
+                        <th class="py-2 fw-bold">Saída</th>
+                        <th class="py-2 fw-bold">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for a in animais %}
+                    <tr style="font-size: 0.85rem;">
+                        <td class="ps-4 py-2">
+                            {% if a.foto %}
+                                <img src="{{ a.foto.url }}" alt="{{ a.nome }}" class="rounded shadow-sm" style="width: 40px; height: 40px; object-fit: cover;">
+                            {% else %}
+                                <div class="bg-light rounded d-flex align-items-center justify-content-center text-muted" style="width: 40px; height: 40px;">
+                                    <i class="bi bi-camera" style="font-size: 0.8rem;"></i>
+                                </div>
+                            {% endif %}
+                        </td>
+                        <td class="fw-semibold text-dark">{{ a.nome }}</td>
+                        <td class="text-center">
+                            {% with status_val=a.status %}
+                                {% if status_val == "DISPONIVEL" %}
+                                    <span class="badge rounded-pill bg-info-subtle text-info border border-info-subtle px-2 py-1 fw-semibold" style="font-size: 0.7rem;">
+                                        {{ a.get_status_display }}
+                                    </span>
+                                {% elif status_val == "ADOTADO" %}
+                                    <span class="badge rounded-pill bg-success-subtle text-success border border-success-subtle px-2 py-1 fw-semibold" style="font-size: 0.7rem;">
+                                        {{ a.get_status_display }}
+                                    </span>
+                                {% else %}
+                                    <span class="badge rounded-pill bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2 py-1 fw-semibold" style="font-size: 0.7rem;">
+                                        {{ a.get_status_display }}
+                                    </span>
+                                {% endif %}
+                            {% endwith %}
+                        </td>
+                        <td class="text-muted text-center">{{ a.data_chegada|date:"d/m/Y"|default:"-" }}</td>
+                        <td class="text-muted text-center">{{ a.data_saida|date:"d/m/Y"|default:"-" }}</td>
+                        <td class="text-center">
+                            <div class="d-inline-flex gap-1">
+                                <a href="{% url 'animais:editar_animal' a.id %}"
+                                   class="btn btn-sm py-0 px-1 btn-outline-primary"
+                                   title="Editar">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <a href="{% url 'animais:excluir_animal' a.id %}"
+                                   class="btn btn-sm py-0 px-1 btn-outline-danger"
+                                   title="Excluir">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Rodapé da tabela -->
+        <div class="card-footer bg-white border-0 py-2 px-4 text-muted small">
+            Exibindo <span class="fw-semibold text-dark">{{ animais_count }}</span> de
+            <span class="fw-semibold text-dark">{{ total_geral }}</span> pet{{ total_geral|pluralize:"s" }}
+        </div>
+        
+        <!-- Mensagem de nenhum resultado -->
+        {% else %}
+        <div class="card-body p-4 text-center bg-white">
+            <i class="bi bi-search fs-4 text-muted mb-2 d-block"></i>
+            <p class="text-muted mb-0 small">Nenhum pet encontrado.</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Link para voltar ao painel e ao topo -->
+    <div class="mt-4 d-flex justify-content-between align-items-center">
+        <a href="{% url 'core:painel' %}" class="text-decoration-none text-muted small fw-bold shadow-hover-link">
+            <i class="bi bi-arrow-left me-1"></i> VOLTAR AO PAINEL
+        </a>
+
+        <a href="#container" class="text-decoration-none text-muted small fw-bold shadow-hover-link">
+            VOLTAR AO TOPO <i class="bi bi-arrow-up ms-1"></i>
+        </a>
+    </div>
+</div>
+
+{% endblock %}

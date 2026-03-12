@@ -2,36 +2,43 @@ name: Django CD
 
 on:
   push:
-    branches: [ "main" ]                
+    branches: [ "main" ]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
 
-      - name: Setup SSH
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Configurar SSH
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -p ${{ vars.SSH_PORT }} ${{ vars.SSH_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Deploy to Server
+      - name: Deploy para o servidor
         run: |
-          # AQUI ESTÁ O PONTO IMPORTANTE: O caminho no servidor
-          # No seu print, você estava em: /home/application/app
-          
-          # 1. Enviar os arquivos novos (Rsync)
-          rsync -avz --delete --exclude '.git' --exclude 'venv' --exclude '__pycache__' -e "ssh -p ${{ vars.SSH_PORT }}" ./ ${{ vars.SSH_USER }}@${{ vars.SSH_HOST }}:/home/${{ vars.SSH_USER }}/app/
+          rsync -avz --delete \
+            --exclude '.git' \
+            --exclude 'venv' \
+            --exclude '__pycache__' \
+            --exclude 'media' \
+            --exclude 'reports' \
+            -e "ssh -p ${{ vars.SSH_PORT }}" ./ ${{ vars.SSH_USER }}@${{ vars.SSH_HOST }}:/home/${{ vars.SSH_USER }}/app/
 
-          # 2. Executar comandos no servidor
           ssh -p ${{ vars.SSH_PORT }} ${{ vars.SSH_USER }}@${{ vars.SSH_HOST }} << 'EOF'
             cd /home/application/app/
             source venv/bin/activate
             pip install -r requirements.txt
             python manage.py migrate
             python manage.py collectstatic --noinput
-            # Adicione aqui o comando para reiniciar sua aplicação, ex:
-            # sudo supervisorctl restart ong
+
+            mkdir -p /home/application/app/media/animais/fotos
+
+            supervisorctl reread || true
+            supervisorctl update || true
+            supervisorctl restart all || true
           EOF

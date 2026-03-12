@@ -16,6 +16,9 @@ def cadastrar_voluntario(request):
     if request.method == 'POST':
         form = VoluntarioForm(request.POST)
         if form.is_valid():
+            if form.cleaned_data.get('website'):
+                return redirect('voluntario_sucesso')  # Proteção contra bots
+                        
             voluntario = form.save()
             # Envio de e-mail
             assunto = 'Novo Voluntário Cadastrado'
@@ -24,7 +27,7 @@ def cadastrar_voluntario(request):
                 f'foi cadastrado com sucesso na área {voluntario.area}!'
             )
             send_mail(
-                subject='assunto',
+                subject=assunto,
                 message=corpo,
                 from_email=settings.DEFAULT_FROM_EMAIL,
                 recipient_list=settings.NOTIFICATIONS_VOLUNTARIOS_TO,
@@ -46,25 +49,38 @@ from .models import Voluntario
 def listar_voluntarios(request):
     cidade = request.GET.get('cidade')
     area = request.GET.get('area')
+    
+    # 1. Base total (todos os voluntários do banco)
+    voluntarios_base = Voluntario.objects.all().order_by('nome')
+    total_geral = voluntarios_base.count()
 
-    voluntarios = Voluntario.objects.all()
-    voluntarios_count = voluntarios.count()
+    # 2. Criamos a lista filtrada
+    # Usamos a lógica de desempacotamento de dicionário que você já tinha, que é bem elegante
+    voluntarios_filtrados = voluntarios_base.filter(
+        **({ 'cidade': cidade } if cidade else {}),
+        **({ 'area': area } if area else {})
+    )
 
-    if cidade:
-        voluntarios = voluntarios.filter(cidade=cidade)
-
-    if area:
-        voluntarios = voluntarios.filter(area=area)
-
-    voluntarios_count = voluntarios.count()
+    # 3. Contagem específica da lista que será exibida na tabela
+    voluntarios_count = voluntarios_filtrados.count()
 
     context = {
-        'voluntarios': voluntarios,
+        'voluntarios': voluntarios_filtrados,
+        'voluntarios_count': voluntarios_count,  # Quantos aparecem na tabela agora
+        'total_geral': total_geral,              # Quantos existem no total
         'cidade_selecionada': cidade,
         'area_selecionada': area,
-        'voluntarios_count': voluntarios_count,
+        
+        # Contagens fixas para os cards (sempre baseadas no total geral)
+        'qtd_evento_adocao': voluntarios_base.filter(area=Voluntario.Area.ADOCAO).count(),
+        'qtd_cuidados': voluntarios_base.filter(area=Voluntario.Area.CUIDADOS).count(),
+        'qtd_associado': voluntarios_base.filter(area=Voluntario.Area.ASSOCIADO).count(),
+        'qtd_outras': voluntarios_base.filter(area=Voluntario.Area.OUTRAS).count(),
+        
+        # Classes para os labels dinâmicos
+        'Areas': Voluntario.Area,
+        'Cidades': Voluntario.Cidade,
     }
-
     return render(request, 'voluntarios/listar.html', context)
 
 # Views 3: login e logout
@@ -80,7 +96,7 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
-            return redirect('listar_voluntarios')  # ou outra view após login
+            return redirect('core:painel')  # ou outra view após login
         else:
             messages.error(request, 'Usuário ou senha inválidos.')
     
