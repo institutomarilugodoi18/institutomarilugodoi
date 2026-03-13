@@ -10,7 +10,6 @@ class Animal(models.Model):
     nome = models.CharField(max_length=120)
     descricao = models.TextField(blank=True)
 
-    # Foto vai existir, mas o upload só funciona quando configurarmos MEDIA_*
     foto = models.ImageField(upload_to="animais/fotos/", blank=True, null=True)
 
     status = models.CharField(
@@ -27,3 +26,8 @@ class Animal(models.Model):
 
     def __str__(self) -> str:
         return f"{self.nome} ({self.get_status_display()})"
+    
+    def delete(self, *args, **kwargs):
+        if self.foto:
+            self.foto.delete(save=False)
+        super().delete(*args, **kwargs)
