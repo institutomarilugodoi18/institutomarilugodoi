@@ -17,8 +17,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 backgroundColor: ['#5bc0de', '#3c763d', '#f0ad4e'],
                 borderColor: '#f8f9fa',
                 borderWidth: 3,
-                hoverOffset: 14,
-                hoverBackgroundColor: ['#46abc7', '#2f5f30', '#d9973d']
+                hoverOffset: 25,
+                hoverBackgroundColor: ['#8edff0', '#6aaf6c', '#f7cb82']
             }]
         },
         options: {
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
             datasets: [{
                 data: valoresVol,
                 backgroundColor: '#fd7e14',
-                borderRadius: 5
+                hoverBackgroundColor: '#ffb067'
             }]
         },
         options: {
@@ -112,7 +112,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     color: '#444',
                     font: { weight: 'bold' },
                     formatter: Math.round
-                }
+                },
+                tooltip: {
+                    enabled: false
+                },
             }
         }
     });

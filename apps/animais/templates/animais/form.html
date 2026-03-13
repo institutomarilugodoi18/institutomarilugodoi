@@ -39,12 +39,12 @@
               <div class="row">
                 <div class="col-md-4 mb-3">
                   <label for="id_data_chegada" class="form-label fw-bold small text-uppercase text-muted">Data de Chegada</label>
-                  {{ form.data_chegada|add_class:"form-control shadow-sm"|attr:"type:date" }}
+                  {{ form.data_chegada }}
                   <div class="text-danger small">{{ form.data_chegada.errors }}</div>
                 </div>
                 <div class="col-md-4 mb-3">
                   <label for="id_data_saida" class="form-label fw-bold small text-uppercase text-muted">Data de Saída</label>
-                  {{ form.data_saida|add_class:"form-control shadow-sm"|attr:"type:date" }}
+                  {{ form.data_saida }}
                   <div class="text-danger small">{{ form.data_saida.errors }}</div>
                 </div>
                 <div class="col-md-4 mb-3">
@@ -67,13 +67,34 @@
               <div class="row">
                 <div class="col-12 mb-4">
                   <label for="id_foto" class="form-label fw-bold small text-uppercase text-muted">Foto do Animal</label>
-                  {{ form.foto|add_class:"form-control shadow-sm" }}
                   {% if form.instance.foto %}
-                  <div class="mt-2 small text-muted">
-                    Foto atual: <a href="{{ form.instance.foto.url }}" target="_blank" class="text-primary text-decoration-none">Visualizar atual</a>
-                  </div>
-                  {% endif %}  
+                  <div class="d-flex flex-wrap align-items-center gap-3 mb-3 p-2 border rounded bg-light-subtle">
+        <a href="{{ form.instance.foto.url }}" target="_blank" class="text-decoration-none">
+          <img
+            src="{{ form.instance.foto.url }}"
+            alt="Foto atual de {{ form.instance.nome }}"
+            style="width: 80px; height: 80px; object-fit: cover; border-radius: 10px; border: 1px solid #dee2e6;"
+          >
+        </a>
+
+        <div class="d-flex flex-column justify-content-center">
+          <span class="small text-muted fw-bold text-uppercase">Foto atual</span>
+          <span class="small text-secondary">
+            Clique na imagem para visualizar
+          </span>
+        </div>
+
+        <div class="form-check ms-md-auto">
+          {{ form.remover_foto }}
+          <label for="{{ form.remover_foto.id_for_label }}" class="form-check-label small text-muted">
+            Remover foto atual
+          </label>
+        </div>
+      </div>
+                  {% endif %}
+                  {{ form.foto }}  
                   <div class="text-danger small">{{ form.foto.errors }}</div>
+                  <div class="text-danger small">{{ form.remover_foto.errors }}</div>
                 </div>
               </div>
               

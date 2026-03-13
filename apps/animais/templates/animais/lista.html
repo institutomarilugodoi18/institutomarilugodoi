@@ -132,7 +132,9 @@
                     <tr style="font-size: 0.85rem;">
                         <td class="ps-4 py-2">
                             {% if a.foto %}
-                                <img src="{{ a.foto.url }}" alt="{{ a.nome }}" class="rounded shadow-sm" style="width: 40px; height: 40px; object-fit: cover;">
+                                <a href="{{ a.foto.url }}" target="_blank" class="text-primary text-decoration-none">
+                                    <img src="{{ a.foto.url }}" alt="{{ a.nome }}" class="rounded" style="width: 40px; height: 40px; object-fit: cover;">
+                                </a>
                             {% else %}
                                 <div class="bg-light rounded d-flex align-items-center justify-content-center text-muted" style="width: 40px; height: 40px;">
                                     <i class="bi bi-camera" style="font-size: 0.8rem;"></i>

@@ -1,8 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
-
 from .models import Animal
 from .forms import AnimalForm
+import os
 
 
 @login_required
@@ -62,9 +62,31 @@ def editar_animal(request, id):
     animal = get_object_or_404(Animal, id=id)
 
     if request.method == "POST":
+        nome_antigo = animal.foto.name if animal.foto else None
+        caminho_antigo = animal.foto.path if animal.foto else None
+
         form = AnimalForm(request.POST, request.FILES, instance=animal)
         if form.is_valid():
-            form.save()
+            remover_foto = form.cleaned_data.get("remover_foto")
+            nova_foto = request.FILES.get("foto")
+
+            # Caso 1: remover foto atual sem enviar nova
+            if remover_foto and not nova_foto and animal.foto:
+                animal.foto.delete(save=False)
+                animal_salvo = form.save(commit=False)
+                animal_salvo.foto = None
+                animal_salvo.save(update_fields=["nome", "descricao", "foto", "status", "data_chegada", "data_saida", "atualizado_em"])
+
+                return redirect("animais:lista")
+            
+            # Caso 2: fluxo normal (mantém ou substitui)
+            animal_salvo = form.save()
+
+            # Se enviou nova foto, apaga a antiga do disco
+            if nova_foto and nome_antigo and nome_antigo != animal_salvo.foto.name:
+                if caminho_antigo and os.path.isfile(caminho_antigo):
+                    os.remove(caminho_antigo)
+
             return redirect("animais:lista")
     else:
         form = AnimalForm(instance=animal)
