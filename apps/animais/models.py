@@ -9,7 +9,6 @@ class Animal(models.Model):
 
     nome = models.CharField(max_length=120)
     descricao = models.TextField(blank=True)
-
     foto = models.ImageField(upload_to="animais/fotos/", blank=True, null=True)
 
     status = models.CharField(
