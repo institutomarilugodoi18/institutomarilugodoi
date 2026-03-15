@@ -20,7 +20,20 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -p ${{ vars.SSH_PORT }} ${{ vars.SSH_HOST }} >> ~/.ssh/known_hosts
+          cat >> ~/.ssh/config <<EOF
+          Host deploy-target
+            HostName ${{ vars.SSH_HOST }}
+            User ${{ vars.SSH_USER }}
+            Port ${{ vars.SSH_PORT }}
+            IdentityFile ~/.ssh/deploy_key
+            IdentitiesOnly yes
+          EOF
+
+          cat >> ~/.ssh/known_hosts <<'EOF'
+          [ag-br1-33.hospedagemelastica.com.br]:28054 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDm69LwAKDIDtml0DYvtA0WD/iiaO8+L0t3UFhOw6DJ13zpG6ekpBchbApp4EX4QtUm3ovx+HNHzjqYI5I83zMIwz7Oxf5PsHxHOnqKV7xWHaJfKgTlw+o0B82/LoDa6nmxS4AkCsbbUewJu/0zpQMG9OWnaA3OegZyurG9BVsqpOdxz4l0vyQvCIOmuPvC0SqyegKHF1g8P6qO9oYRiPtfjN8YvWWdjJJpDo7+W6HtzAswnk4ahpaPtXmF9K8xfpWw+s3GJJ+4X9v5I9/ffKmRrODRk3WsMVYlwoK8ve6hABDXM7MExl4BeTtfy0cWqKcQMNKDMvMmIHoYTbOreBvZbs97q7zllX0n1u+nl0ttqs9+kA0fEWDY6bD6bku0PfCLXUFKMsX3u34mkh/sliam5FlsJcO2plyg/blLiuF0Ppqs+3xaOujpW5FM9r/hzdmUe3L7jXzZFpzCY0pPZFKKG+WjrENVSmHuir0yzK8NDh3m25+cVUi5HA1Nx4MBhRU=
+          [ag-br1-33.hospedagemelastica.com.br]:28054 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBLgrJJuLnVexFmlYSe/W0adXaS2pP5Qe+vPf/iilZbuqMHr8oSfojLnwwfGJPFvfPd5LHa5C2NV7ArY5cij+w3c=
+          [ag-br1-33.hospedagemelastica.com.br]:28054 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPxuDfJqaSZ5uVBJg9FuGVuN1bTE8vZH8zCSLS16k7MR
+          EOF
 
       - name: Deploy para o servidor
         run: |
