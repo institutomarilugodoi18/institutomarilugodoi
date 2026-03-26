@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 
 <div id="container" class="container py-5 mt-4">
@@ -83,7 +84,21 @@
         <!-- Filtro -->
         <div class="card-body border-bottom bg-body-tertiary p-2 px-md-3">
             <form method="get" class="row g-2 align-items-end">
-                <div class="col-lg-4 col-md-6">
+                <div class="col-lg-3 col-md-6">
+                    <label for="nome" class="form-label fw-bold text-muted mb-1" style="font-size: 0.75rem; text-transform: uppercase;">
+                        Buscar por Nome
+                    </label>
+                    <input
+                        type="text"
+                        id="busca-nome"
+                        class="form-control form-control-sm shadow-sm"
+                        placeholder="Digite o nome do pet"
+                        autocomplete="off"
+                        data-busca-nome
+                    >
+                </div>
+
+                <div class="col-lg-3 col-md-6">
                     <label for="status" class="form-label fw-bold text-muted mb-1" style="font-size: 0.75rem; text-transform: uppercase;">
                         Filtrar por Status
                     </label>
@@ -95,13 +110,13 @@
                     </select>
                 </div>
 
-                <div class="col-lg-4 col-md-6">
+                <div class="col-lg-3 col-md-6">
                     <a href="{% url 'animais:lista' %}" class="btn btn-outline-secondary btn-sm px-3">
                             Limpar
                     </a>
                 </div>
 
-                <div class="col-lg-4 col-12 mt-2">
+                <div class="col-lg-3 col-12 mt-2">
                     <div class="d-flex flex-wrap gap-2 justify-content-lg-end">
                         <a href="{% url 'animais:criar_animal' %}"
                            class="btn btn-primary btn-sm fw-bold px-3 d-inline-flex align-items-center gap-1 shadow-sm">
@@ -129,7 +144,7 @@
                 </thead>
                 <tbody>
                     {% for a in animais %}
-                    <tr style="font-size: 0.85rem;">
+                    <tr class="linha-animal" data-linha-buscavel data-nome="{{ a.nome|lower }}" style="font-size: 0.85rem;">
                         <td class="ps-4 py-2">
                             {% if a.foto %}
                                 <a href="{{ a.foto.url }}" target="_blank" class="text-primary text-decoration-none">
@@ -207,5 +222,7 @@
         </a>
     </div>
 </div>
+
+<script src="{% static 'js/destaque_nome_lista.js' %}"></script>
 
 {% endblock %}
