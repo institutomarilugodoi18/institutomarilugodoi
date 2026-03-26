@@ -28,5 +28,6 @@ urlpatterns = [
     path('voluntarios/', include('apps.voluntarios.urls')),
     path('animais/', include('apps.animais.urls')),
     path('relatorios/', include('apps.relatorios.urls')),
+    path('usuarios/', include('apps.usuarios.urls')),
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
 ]

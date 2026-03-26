@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'apps.core',
     'apps.relatorios',
     'apps.souvenir',
+    'apps.usuarios',
     'apps.voluntarios',
     'widget_tweaks',
 ]
