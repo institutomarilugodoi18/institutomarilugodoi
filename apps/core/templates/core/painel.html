@@ -47,6 +47,21 @@
           </div>
         </a>
       </div>
+
+      {% if user.is_staff %}
+      <div class="col-12 col-md-6 col-lg-4">
+        <a class="text-decoration-none" href="{% url 'usuarios:lista' %}">
+          <div class="card card-hover border-0 h-100 text-center p-4">
+            <div class="card-body">
+              <i class="bi bi-person-gear fs-1 text-warning mb-3 d-block"></i>
+              <h4 class="fw-bold text-dark">Usuários</h4>
+              <p class="text-muted small mb-4">Controle de acessos internos da equipe.</p>
+              <span class="btn btn-warning btn-sm fw-bold px-4 text-dark shadow-sm">Acessar Módulo</span>
+            </div>
+          </div>
+        </a>
+      </div>
+      {% endif %}
     </div>
   </div>
 </section>
