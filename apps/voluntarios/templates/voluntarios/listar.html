@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}Gestão de Voluntários - Instituto Marilu Godoi{% endblock %}
 {% block content %}
 
@@ -100,7 +101,21 @@
         <!-- Filtro -->
         <div class="card-body border-bottom bg-body-tertiary p-2 px-md-3">
             <form method="get" class="row g-2 align-items-end">
-                <div class="col-lg-3 col-md-6">
+                <div class="col-lg-2 col-md-6">
+                    <label for="busca-nome" class="form-label fw-bold text-muted mb-1" style="font-size: 0.75rem; text-transform: uppercase;">
+                        Buscar por Nome
+                    </label>
+                    <input
+                        type="text"
+                        id="busca-nome"
+                        class="form-control form-control-sm shadow-sm"
+                        placeholder="Buscar nome"
+                        autocomplete="off"
+                        data-busca-nome
+                    >
+                </div>
+
+                <div class="col-lg-2 col-md-6">
                     <label for="cidade" class="form-label fw-bold text-muted mb-1" style="font-size: 0.75rem; text-transform: uppercase;">
                         Cidade
                     </label>
@@ -112,7 +127,7 @@
                     </select>
                 </div>
 
-                <div class="col-lg-3 col-md-6">
+                <div class="col-lg-2 col-md-6">
                     <label for="area" class="form-label fw-bold text-muted mb-1" style="font-size: 0.75rem; text-transform: uppercase;">
                         Área
                     </label>
@@ -124,13 +139,13 @@
                     </select>
                 </div>
 
-                <div class="col-lg-3 col-md-6">
+                <div class="col-lg-2 col-md-6">
                     <a href="{% url 'listar_voluntarios' %}" class="btn btn-outline-secondary btn-sm px-3">
                             Limpar
                     </a>
                 </div>
 
-                <div class="col-lg-3 col-12 mt-2">
+                <div class="col-lg-4 col-12 mt-2">
                     <div class="d-flex flex-wrap gap-2 justify-content-lg-end">
                         <a href="{% url 'cadastrar_voluntario' %}"
                            class="btn btn-primary btn-sm fw-bold px-3 d-inline-flex align-items-center gap-1 shadow-sm">
@@ -158,7 +173,7 @@
                 </thead>
                 <tbody>
                     {% for v in voluntarios %}
-                    <tr style="font-size: 0.85rem;">
+                    <tr data-linha-buscavel data-nome="{{ v.nome|lower }}" style="font-size: 0.85rem;">
                         <td class="ps-4 fw-semibold text-dark">{{ v.nome }}</td>
                         <td class="text-muted">{{ v.email }}</td>
                         <td class="text-muted text-center">{{ v.telefone }}</td>
@@ -230,5 +245,7 @@
         </a>
     </div>
 </div>
+
+<script src="{% static 'js/destaque_nome_lista.js' %}"></script>
 
 {% endblock %}
