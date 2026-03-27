@@ -45,6 +45,7 @@
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text bg-white border-end text-muted"><i class="bi bi-lock"></i></span>
                                     <input type="password" name="password" class="form-control" id="password" placeholder="********" required>
+                                    <button type="button" class="btn bg-white border text-muted" data-toggle-password data-target-id="password" aria-label="Mostrar senha" title="Mostrar senha"><i class="bi bi-eye"></i></button>
                                 </div>
                             </div>
 
@@ -61,4 +62,7 @@
         </div>
     </div>
 </section>
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'js/toggle_password.js' %}"></script>
 {% endblock %}

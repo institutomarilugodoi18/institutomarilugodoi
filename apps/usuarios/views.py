@@ -14,7 +14,8 @@ def usuario_equipe(user):
 def lista_usuarios(request):
     status_selecionado = request.GET.get('status', '').strip()
 
-    usuarios = User.objects.all().order_by('username')
+    usuarios_base = User.objects.exclude(username='admin')
+    usuarios = usuarios_base.order_by('username')
 
     if status_selecionado == 'ativos':
         usuarios = usuarios.filter(is_active=True)
