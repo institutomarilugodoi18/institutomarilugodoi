@@ -113,3 +113,51 @@ def test_clean_foto_retorna_arquivo_original_quando_compressao_nao_compensa(monk
     resultado = form.clean_foto()
 
     assert resultado is foto
+
+
+# Verifica se clean_foto mantém imagem RGB e ainda assim retorna JPEG comprimido quando a compressão compensa.
+@pytest.mark.django_db
+def test_clean_foto_imagem_rgb_retorna_jpg_comprimido():
+    foto = criar_imagem_em_memoria(
+        nome="foto_rgb.png",
+        formato="PNG",
+        modo="RGB",
+        tamanho=(1800, 1800),
+        cor=(255, 0, 0),
+    )
+
+    form = AnimalForm(
+        data={
+            "nome": "Thor",
+            "descricao": "Imagem RGB",
+            "status": "DISPONIVEL",
+            "data_chegada": "2026-03-14",
+            "data_saida": "",
+        },
+        files={"foto": foto},
+    )
+
+    assert form.is_valid() is True
+
+    foto_processada = form.cleaned_data["foto"]
+    assert foto_processada is not None
+    assert foto_processada.name.endswith(".jpg")
+    assert foto_processada.content_type == "image/jpeg"
+
+
+# Verifica se o formulário configura os widgets de data com type='date'.
+@pytest.mark.django_db
+def test_animal_form_configura_widgets_de_data_com_type_date():
+    form = AnimalForm()
+
+    assert form.fields["data_chegada"].widget.input_type == "date"
+    assert form.fields["data_saida"].widget.input_type == "date"
+
+
+# Verifica se o formulário contém o campo remover_foto como não obrigatório.
+@pytest.mark.django_db
+def test_animal_form_possui_campo_remover_foto_nao_obrigatorio():
+    form = AnimalForm()
+
+    assert "remover_foto" in form.fields
+    assert form.fields["remover_foto"].required is False

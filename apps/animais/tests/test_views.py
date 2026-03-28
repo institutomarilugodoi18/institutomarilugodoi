@@ -228,3 +228,187 @@ def test_usuario_logado_exclui_animal_com_sucesso(client, usuario):
 
     assert response.status_code == 302
     assert Animal.objects.filter(id=animal.id).count() == 0
+
+
+from unittest.mock import patch
+
+
+# ===== TESTES DE AUTENTICAÇÃO =====
+
+# Verifica se usuário não logado é redirecionado ao tentar acessar a lista de animais.
+@pytest.mark.django_db
+def test_usuario_nao_logado_e_redirecionado_ao_acessar_lista_animais(client):
+    response = client.get(reverse("animais:lista"))
+
+    assert response.status_code == 302
+    assert "/login/" in response.url
+
+
+# Verifica se usuário não logado é redirecionado ao tentar acessar o formulário de criação.
+@pytest.mark.django_db
+def test_usuario_nao_logado_e_redirecionado_ao_acessar_criar_animal(client):
+    response = client.get(reverse("animais:criar_animal"))
+
+    assert response.status_code == 302
+    assert "/login/" in response.url
+
+
+# Verifica se usuário não logado é redirecionado ao tentar acessar a edição de animal.
+@pytest.mark.django_db
+def test_usuario_nao_logado_e_redirecionado_ao_acessar_editar_animal(client):
+    animal = Animal.objects.create(
+        nome="Mel",
+        status=Animal.Status.DISPONIVEL
+    )
+
+    response = client.get(reverse("animais:editar_animal", args=[animal.id]))
+
+    assert response.status_code == 302
+    assert "/login/" in response.url
+
+
+# Verifica se usuário não logado é redirecionado ao tentar acessar a exclusão de animal.
+@pytest.mark.django_db
+def test_usuario_nao_logado_e_redirecionado_ao_acessar_excluir_animal(client):
+    animal = Animal.objects.create(
+        nome="Mel",
+        status=Animal.Status.DISPONIVEL
+    )
+
+    response = client.get(reverse("animais:excluir_animal", args=[animal.id]))
+
+    assert response.status_code == 302
+    assert "/login/" in response.url
+
+
+# ===== TESTES DE CONTEXTO DA LISTAGEM =====
+
+# Verifica se a listagem envia corretamente os totais gerais e por status no contexto.
+@pytest.mark.django_db
+def test_lista_animais_envia_totais_corretos_no_contexto(client, usuario):
+    Animal.objects.create(nome="Mel", status=Animal.Status.DISPONIVEL)
+    Animal.objects.create(nome="Bob", status=Animal.Status.DISPONIVEL)
+    Animal.objects.create(nome="Luna", status=Animal.Status.ADOTADO)
+    Animal.objects.create(nome="Thor", status=Animal.Status.TRATAMENTO)
+
+    login = client.login(username="filipe", password="123456")
+    assert login is True
+
+    response = client.get(reverse("animais:lista"))
+
+    assert response.status_code == 200
+    assert response.context["total_geral"] == 4
+    assert response.context["qtd_disponivel"] == 2
+    assert response.context["qtd_adotado"] == 1
+    assert response.context["qtd_tratamento"] == 1
+    assert response.context["animais_count"] == 4
+    assert response.context["status_selecionado"] is None
+    assert response.context["Status"] == Animal.Status
+
+
+# ===== TESTES DE EDIÇÃO =====
+
+# Verifica se POST inválido na edição não altera os dados do animal e mantém o formulário na tela.
+@pytest.mark.django_db
+def test_post_invalido_na_edicao_nao_altera_animal(client, usuario):
+    animal = Animal.objects.create(
+        nome="Mel",
+        descricao="Descrição original",
+        status=Animal.Status.DISPONIVEL
+    )
+
+    login = client.login(username="filipe", password="123456")
+    assert login is True
+
+    response = client.post(reverse("animais:editar_animal", args=[animal.id]), {
+        "nome": "",
+        "descricao": "Descrição alterada",
+        "status": Animal.Status.ADOTADO,
+        "data_chegada": "2026-03-14",
+        "data_saida": "",
+        "remover_foto": "",
+    })
+
+    assert response.status_code == 200
+
+    animal.refresh_from_db()
+    assert animal.nome == "Mel"
+    assert animal.descricao == "Descrição original"
+    assert animal.status == Animal.Status.DISPONIVEL
+
+
+# Verifica se usuário logado recebe 404 ao tentar editar um animal inexistente.
+@pytest.mark.django_db
+def test_usuario_logado_recebe_404_ao_editar_animal_inexistente(client, usuario):
+    login = client.login(username="filipe", password="123456")
+    assert login is True
+
+    response = client.get(reverse("animais:editar_animal", args=[9999]))
+
+    assert response.status_code == 404
+
+
+# Verifica se usuário logado recebe 404 ao tentar excluir um animal inexistente.
+@pytest.mark.django_db
+def test_usuario_logado_recebe_404_ao_excluir_animal_inexistente(client, usuario):
+    login = client.login(username="filipe", password="123456")
+    assert login is True
+
+    response = client.get(reverse("animais:excluir_animal", args=[9999]))
+
+    assert response.status_code == 404
+
+
+# Verifica se usuário logado substitui a foto antiga por uma nova e remove o arquivo antigo do disco.
+@pytest.mark.django_db
+def test_usuario_logado_substitui_foto_antiga_por_nova_na_edicao(client, usuario):
+    from apps.animais.tests.test_forms import criar_imagem_em_memoria
+
+    foto_antiga = criar_imagem_em_memoria(
+        nome="foto_antiga.png",
+        formato="PNG",
+        modo="RGBA",
+        tamanho=(300, 300),
+        cor=(255, 0, 0, 128),
+    )
+
+    foto_nova = criar_imagem_em_memoria(
+        nome="foto_nova.png",
+        formato="PNG",
+        modo="RGBA",
+        tamanho=(400, 400),
+        cor=(0, 255, 0, 128),
+    )
+
+    animal = Animal.objects.create(
+        nome="Mel",
+        descricao="Com foto antiga",
+        status=Animal.Status.DISPONIVEL,
+        foto=foto_antiga,
+    )
+
+    login = client.login(username="filipe", password="123456")
+    assert login is True
+
+    with patch("apps.animais.views.os.path.isfile", return_value=True), patch("apps.animais.views.os.remove") as mock_remove:
+        response = client.post(
+            reverse("animais:editar_animal", args=[animal.id]),
+            {
+                "nome": "Mel Atualizada",
+                "descricao": "Agora com nova foto",
+                "status": Animal.Status.DISPONIVEL,
+                "data_chegada": "",
+                "data_saida": "",
+                "remover_foto": "",
+                "foto": foto_nova,
+            }
+        )
+
+    assert response.status_code == 302
+
+    animal.refresh_from_db()
+    assert animal.nome == "Mel Atualizada"
+    assert animal.descricao == "Agora com nova foto"
+    assert animal.foto
+    assert animal.foto.name.endswith(".jpg")
+    mock_remove.assert_called_once()

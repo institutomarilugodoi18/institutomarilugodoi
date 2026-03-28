@@ -24,10 +24,10 @@ def lista_usuarios(request):
     elif status_selecionado == 'staff':
         usuarios = usuarios.filter(is_staff=True)
 
-    total_geral = User.objects.count()
-    qtd_ativos = User.objects.filter(is_active=True).count()
-    qtd_inativos = User.objects.filter(is_active=False).count()
-    qtd_staff = User.objects.filter(is_staff=True).count()
+    total_geral = usuarios_base.count()
+    qtd_ativos = usuarios_base.filter(is_active=True).count()
+    qtd_inativos = usuarios_base.filter(is_active=False).count()
+    qtd_staff = usuarios_base.filter(is_staff=True).count()
 
     context = {
         'usuarios': usuarios,
